@@ -1,0 +1,255 @@
+<?xml version="1.0"?>
+<definitions name="PaylineTools" targetNamespace="urn:PaylineTools"
+	xmlns:typens="urn:PaylineTools" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/"
+	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns="http://schemas.xmlsoap.org/wsdl/">
+	<types>
+		<xsd:schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="urn:PaylineTools">	
+			<complexType name="paymentMean">
+				<annotation>
+					<documentation>This element contains infos aboout a payment mean</documentation>
+				</annotation>
+				<sequence>
+					<element name="code" type="xsd:string"/>
+					<element name="logoUrl" type="xsd:string"/>
+				</sequence>
+			</complexType>	
+			<complexType name="paymentWay">
+				<annotation>
+					<documentation>This element contains infos aboout a payment way</documentation>
+				</annotation>
+				<sequence>
+					<element name="contractNumber" type="xsd:string"/>
+					<element name="mode" type="xsd:string"/>
+					<element name="action" type="xsd:string"/>
+					<element name="amountMin" type="xsd:integer"/>
+					<element name="amountMax" type="xsd:integer"/>
+					<element name="period" type="xsd:integer"/>
+					<element name="billingNumber" type="xsd:integer"/>
+					<element name="firstBillinWeight" type="xsd:integer"/>
+					<element name="UX" type="xsd:string"/>
+					<element name="wallet" type="xsd:boolean"/>
+					<element name="customPageCode" type="xsd:string"/>
+				</sequence>
+			</complexType>
+			<complexType name="getPaymentMeansResponse">
+				<annotation>
+					<documentation>This element is the response from getPaymentMeans service</documentation>
+				</annotation>
+				<sequence>
+					<element name="result" nillable="false" type="xsd:string"/>
+					<element name="listPaymentMean" nillable="false">
+						<complexType>
+							<sequence>
+								<element maxOccurs="unbounded" minOccurs="0" name="paymentMean" type="typens:paymentMean"/>
+							</sequence>
+						</complexType>
+					</element>
+				</sequence>
+			</complexType>
+			<complexType name="getPaymentWaysRequest">
+				<annotation>
+					<documentation>
+						This element contains request parameters for service getPaymentWays
+					</documentation>
+				</annotation>
+				<sequence>
+					<element name="cryptedMerchantID" nillable="true" type="xsd:string"/>
+					<element name="environment" nillable="true" type="xsd:string"/>
+				</sequence>
+			</complexType>
+			<complexType name="getPaymentWaysResponse">
+				<annotation>
+					<documentation>This element is the response from getPaymentWays service</documentation>
+				</annotation>
+				<sequence>
+					<element name="result" nillable="false" type="xsd:string"/>
+					<element name="listPaymentWayPOS" nillable="false">
+						<complexType>
+							<sequence>
+								<element maxOccurs="unbounded" minOccurs="0" name="paymentWayPOS" type="typens:paymentWayPOS"/>
+							</sequence>
+						</complexType>
+					</element>
+				</sequence>
+			</complexType>
+			<complexType name="pointOfSale">
+				<annotation>
+					<documentation>
+						This element contains all information about point of sale
+					</documentation>
+				</annotation>
+				<sequence>
+					<element name="label" nillable="true" type="xsd:string"/>
+					<element name="webmasterEmail" nillable="true" type="xsd:string"/>
+					<element name="webstoreURL" nillable="true" type="xsd:string"/>
+					<element name="contracts">
+						<annotation>
+							<documentation>list of contract</documentation>
+						</annotation>
+						<complexType>
+							<sequence>
+								<element maxOccurs="unbounded" minOccurs="0" name="contract" type="typens:contract"/>
+							</sequence>
+						</complexType>
+					</element>
+					<element name="customPaymentPageCodeList">
+						<annotation>
+							<documentation>list of custom payment page code</documentation>
+						</annotation>
+						<complexType>
+							<sequence>
+								<element maxOccurs="unbounded" minOccurs="0" name="customPaymentPageCode" type="typens:customPaymentPageCode"/>
+							</sequence>
+						</complexType>
+					</element>
+				</sequence>
+			</complexType>
+			<complexType name="paymentWayPOS">
+				<annotation>
+					<documentation>
+						This element contains payment way information for a point of sale
+					</documentation>
+				</annotation>
+				<sequence>
+					<element name="label" nillable="true" type="xsd:string"/>
+					<element name="webmasterEmail" nillable="true" type="xsd:string"/>
+					<element name="webstoreURL" nillable="true" type="xsd:string"/>
+					<element name="listPaymentWay">
+						<annotation>
+							<documentation>list of payment ways</documentation>
+						</annotation>
+						<complexType>
+							<sequence>
+								<element maxOccurs="unbounded" minOccurs="0" name="paymentWay" type="typens:paymentWay"/>
+							</sequence>
+						</complexType>
+					</element>
+				</sequence>
+			</complexType>
+			<complexType name="customPaymentPageCode">
+				<annotation>
+					<documentation>
+						This element contains all information about customPaymentPageCode
+					</documentation>
+				</annotation>
+				<sequence>
+					<element name="code" nillable="true" type="xsd:string"/>
+					<element name="label" nillable="true" type="xsd:string"/>
+					<element name="type" nillable="true" type="xsd:string"/>
+				</sequence>
+			</complexType>
+			<complexType name="contract">
+				<annotation>
+					<documentation>
+						This element contains all information about contract
+					</documentation>
+				</annotation>
+				<sequence>
+					<element name="cardType" nillable="true" type="xsd:string"/>
+					<element minOccurs="0" name="label" nillable="true" type="xsd:string"/>
+					<element name="contractNumber" nillable="true" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="enrolment3DS" type="xsd:string"/>
+				</sequence>
+			</complexType>
+			<complexType name="insertMerchantSettingsRequest">
+				<annotation>
+					<documentation>
+						This element contains request parameters for service insertMerchantSettings
+					</documentation>
+				</annotation>
+				<sequence>
+					<element name="cryptedMerchantID" nillable="false" type="xsd:string"/>
+					<element name="environment" nillable="false" type="xsd:string"/>
+					<element name="returnUrl" nillable="false" type="xsd:string"/>
+					<element name="listPointOfSale" nillable="false">
+						<complexType>
+							<sequence>
+								<element maxOccurs="unbounded" minOccurs="0" name="pointOfSale" type="typens:pointOfSale"/>
+							</sequence>
+						</complexType>
+					</element>
+				</sequence>
+			</complexType>
+			<complexType name="insertMerchantSettingsResponse">
+				<annotation>
+					<documentation>
+						This element contains response from service insertMerchantSettings
+					</documentation>
+				</annotation>
+				<sequence>
+					<element name="code" nillable="true" type="xsd:string"/>
+					<element name="message" nillable="true" type="xsd:string"/>				
+					<element name="returnUrl" nillable="true" type="xsd:string"/>
+				</sequence>
+			</complexType>
+		</xsd:schema>
+	</types>
+	<message name="getPaymentMeansRequest">
+	</message>
+	<message name="getPaymentMeansResponse">
+		<part name="return" type="typens:getPaymentMeansResponse" />
+	</message>
+	<message name="getPaymentWaysRequest">
+		<part name="request" type="typens:getPaymentWaysRequest" />
+	</message>
+	<message name="getPaymentWaysResponse">
+		<part name="return" type="typens:getPaymentWaysResponse" />
+	</message>
+	<message name="insertMerchantSettingsRequest">
+		<part name="request" type="typens:insertMerchantSettingsRequest" />
+	</message>
+	<message name="insertMerchantSettingsResponse">
+		<part name="return" type="typens:insertMerchantSettingsResponse" />
+	</message>
+	<portType name="PaylineToolsPort">
+		<operation name="getPaymentMeans">
+			<input message="typens:getPaymentMeansRequest" />
+			<output message="typens:getPaymentMeansResponse" />
+		</operation>
+		<operation name="getPaymentWays">
+			<input message="typens:getPaymentWaysRequest" />
+			<output message="typens:getPaymentWaysResponse" />
+		</operation>
+		<operation name="insertMerchantSettings">
+			<input message="typens:insertMerchantSettingsRequest" />
+			<output message="typens:insertMerchantSettingsResponse" />
+		</operation>
+	</portType>
+	<binding name="PaylineToolsBinding" type="typens:PaylineToolsPort">
+		<soap:binding style="rpc"	transport="http://schemas.xmlsoap.org/soap/http" />
+		<operation name="getPaymentMeans">
+			<soap:operation soapAction="PaylineToolsAction" />
+			<input name="getPaymentMeansRequest">
+				<soap:body use="encoded" namespace="urn:PaylineTools" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+			</input>
+			<output name="getPaymentMeansResponse">
+				<soap:body use="encoded" namespace="urn:PaylineTools" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+			</output>
+		</operation>
+		<operation name="getPaymentWays">
+			<soap:operation soapAction="PaylineToolsAction" />
+			<input name="getPaymentWaysRequest">
+				<soap:body use="encoded" namespace="urn:PaylineTools" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+			</input>
+			<output name="getPaymentWaysResponse">
+				<soap:body use="encoded" namespace="urn:PaylineTools" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+			</output>
+		</operation>
+		<operation name="insertMerchantSettings">
+			<soap:operation soapAction="PaylineToolsAction" />
+			<input name="insertMerchantSettingsRequest">
+				<soap:body use="encoded" namespace="urn:PaylineTools" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+			</input>
+			<output name="insertMerchantSettingsResponse">
+				<soap:body use="encoded" namespace="urn:PaylineTools" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+			</output>
+		</operation>
+	</binding>
+	<service name="PaylineToolsService">
+		<documentation>Payline by Monext configuration tools</documentation>
+		<port name="PaylineToolsPort" binding="typens:PaylineToolsBinding">
+			<soap:address location="http://demo.payline.com/~product/PaylineByMonextEndpoint.php" />
+		</port>
+	</service>
+</definitions>
