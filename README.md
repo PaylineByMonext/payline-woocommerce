@@ -33,7 +33,10 @@ Payline is licensed under the LGPL-3.0+ License
 Changelog
 -------
 
-* 1.3.4 - 2017/02/27  
+* 1.3.5 - 2017/04/04  
+     Feature - send buyer info mandatoty for Cetelem 3x / 4x
+     
+ * 1.3.4 - 2017/02/27  
      Fix - languages files
 
 * 1.3.3 - 2016/08/26  
