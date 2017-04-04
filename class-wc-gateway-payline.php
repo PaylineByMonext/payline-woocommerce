@@ -11,7 +11,7 @@ use Payline\PaylineSDK;
  */
 
 class WC_Gateway_Payline extends WC_Payment_Gateway {
-	private $extensionVersion = '1.3.4';
+	private $extensionVersion = '1.3.5';
     private $SDK;
 	private $posData;
 	private $disp_errors = "";
@@ -323,7 +323,7 @@ class WC_Gateway_Payline extends WC_Payment_Gateway {
     			$this->settings['proxy_password'],
     			$this->settings['environment']
     		);
-    		$this->SDK->usedBy('wooCommerce '.$this->extensionVersion);
+    		$this->SDK->usedBy('wooComm '.$this->extensionVersion);
     		$res = $this->SDK->getEncryptionKey(null);
     		if($res['result']['code'] == '00000'){
     			echo "<div class='inline updated'>";
@@ -570,6 +570,7 @@ class WC_Gateway_Payline extends WC_Payment_Gateway {
     		$this->settings['proxy_password'],
     		$this->settings['environment']
     	);
+    	$this->SDK->usedBy('wooComm '.$this->extensionVersion);
     	
     	$doWebPaymentRequest = array();    	
     	$doWebPaymentRequest['payment']['amount'] = round($order->get_total()*100);
@@ -587,17 +588,21 @@ class WC_Gateway_Payline extends WC_Payment_Gateway {
 		$doWebPaymentRequest['order']['currency'] = $doWebPaymentRequest['payment']['currency'];
 		
 		// BUYER
+		$doWebPaymentRequest['buyer']['title'] = 'M';
 		$doWebPaymentRequest['buyer']['lastName'] = $order->billing_last_name;
 		$doWebPaymentRequest['buyer']['firstName'] = $order->billing_first_name;
 		$doWebPaymentRequest['buyer']['customerId'] = $order->billing_email;
 		$doWebPaymentRequest['buyer']['email'] = $doWebPaymentRequest['buyer']['customerId'];
 		$doWebPaymentRequest['buyer']['ip'] = $_SERVER['REMOTE_ADDR'];
+		$doWebPaymentRequest['buyer']['mobilePhone'] = $order->billing_phone;
 		
 		// BILLING ADDRESS
 		$doWebPaymentRequest['billingAddress']['name'] = $order->billing_first_name." ".$order->billing_last_name;
 		if($order->billing_company != null && strlen($order->billing_company) > 0){
 			$doWebPaymentRequest['billingAddress']['name'] .= ' ('.$order->billing_company.')';
 		}
+		$doWebPaymentRequest['billingAddress']['firstName'] = $order->billing_first_name;
+		$doWebPaymentRequest['billingAddress']['lastName'] = $order->billing_last_name;
 		$doWebPaymentRequest['billingAddress']['street1'] = $order->billing_address_1;
 		$doWebPaymentRequest['billingAddress']['street2'] = $order->billing_address_2;
 		$doWebPaymentRequest['billingAddress']['cityName'] = $order->billing_city;
@@ -605,11 +610,13 @@ class WC_Gateway_Payline extends WC_Payment_Gateway {
 		$doWebPaymentRequest['billingAddress']['country'] = $order->billing_country;
 		$doWebPaymentRequest['billingAddress']['phone'] =  $order->billing_phone;
 		
-		// ADDRESS (optional)
+		// SHIPPING ADDRESS
 		$doWebPaymentRequest['shippingAddress']['name'] = $order->shipping_first_name ." ".$order->shipping_last_name;
 		if($order->shipping_company != null && strlen($order->shipping_company) > 0){
 			$doWebPaymentRequest['shippingAddress']['name'] .= ' ('.$order->shipping_company.')';
 		}
+		$doWebPaymentRequest['shippingAddress']['firstName'] = $order->shipping_first_name;
+		$doWebPaymentRequest['shippingAddress']['lastName'] = $order->shipping_last_name;
 		$doWebPaymentRequest['shippingAddress']['street1'] = $order->shipping_address_1;
 		$doWebPaymentRequest['shippingAddress']['street2'] = $order->shipping_address_2;
 		$doWebPaymentRequest['shippingAddress']['cityName'] = $order->shipping_city;
@@ -673,6 +680,7 @@ class WC_Gateway_Payline extends WC_Payment_Gateway {
     		$this->settings['proxy_password'],
     		$this->settings['environment']
     	);
+    	$this->SDK->usedBy('wooComm '.$this->extensionVersion);
     	$res = $this->SDK->getWebPaymentDetails(array('token'=>$_GET['token'],'version'=>'2'));
     	if($res['result']['code'] == PaylineSDK::ERR_CODE){
     		$this->SDK->getLogger()->addError('Unable to call Payline for token '.$_GET['token']);
