@@ -63,7 +63,7 @@ add_filter('woocommerce_payment_gateways', 'woocommerce_payline_add_method');
 
 // add a link from plugin list to parameters
 function woocommerce_payline_add_link($links, $file) {
-	$links[] = '<a href="'.admin_url('admin.php?page=woocommerce_settings&tab=payment_gateways&section=WC_Gateway_Payline').'">' . __('Settings') .'</a>';
+	$links[] = '<a href="'.admin_url('admin.php?page=wc-settings&tab=checkout&section=payline').'">' . __('Settings') .'</a>';
 	return $links;
 }
 add_filter('plugin_action_links_'.plugin_basename(__FILE__), 'woocommerce_payline_add_link',  10, 2);
