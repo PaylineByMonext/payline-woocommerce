@@ -213,7 +213,7 @@ class WC_Gateway_Payline extends WC_Payment_Gateway {
         $this->icon = apply_filters('woocommerce_payline_icon', WCPAYLINE_PLUGIN_URL . 'assets/images/payline_front.png');
         $this->has_fields = false;
         $this->method_title = 'Payline';
-        $this->order_button_text  = __( 'Pay via Payline', 'woocommerce' );
+        $this->order_button_text  = __( 'Pay via Payline', 'payline' );
         
 		// Load the form fields.
 		$this->init_form_fields();
