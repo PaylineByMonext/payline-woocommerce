@@ -7,6 +7,8 @@
  * Author: Monext
  * Author URI: http://www.monext.fr
  * License: LGPL-3.0+
+ * GitHub Plugin URI: https://github.com/PaylineByMonext/payline-woocommerce/
+ * Github Branch: master
  * 
  *  Copyright 2017  Monext  (email : support@payline.com)
 
