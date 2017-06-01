@@ -595,7 +595,7 @@ class WC_Gateway_Payline extends WC_Payment_Gateway {
 		$doWebPaymentRequest['buyer']['customerId'] = $order->billing_email;
 		$doWebPaymentRequest['buyer']['email'] = $doWebPaymentRequest['buyer']['customerId'];
 		$doWebPaymentRequest['buyer']['ip'] = $_SERVER['REMOTE_ADDR'];
-		$doWebPaymentRequest['buyer']['mobilePhone'] = $order->billing_phone;
+		$doWebPaymentRequest['buyer']['mobilePhone'] = preg_replace("/[^0-9.]/", '', $order->billing_phone);
 		
 		// BILLING ADDRESS
 		$doWebPaymentRequest['billingAddress']['name'] = $order->billing_first_name." ".$order->billing_last_name;
@@ -609,7 +609,7 @@ class WC_Gateway_Payline extends WC_Payment_Gateway {
 		$doWebPaymentRequest['billingAddress']['cityName'] = $order->billing_city;
 		$doWebPaymentRequest['billingAddress']['zipCode'] = $order->billing_postcode;
 		$doWebPaymentRequest['billingAddress']['country'] = $order->billing_country;
-		$doWebPaymentRequest['billingAddress']['phone'] =  $order->billing_phone;
+		$doWebPaymentRequest['billingAddress']['phone'] = preg_replace("/[^0-9.]/", '', $order->billing_phone);
 		
 		// SHIPPING ADDRESS
 		$doWebPaymentRequest['shippingAddress']['name'] = $order->shipping_first_name ." ".$order->shipping_last_name;
