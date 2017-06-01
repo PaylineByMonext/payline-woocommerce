@@ -228,9 +228,9 @@ class WC_Gateway_Payline extends WC_Payment_Gateway {
 		$this->debug = (isset($this->settings['debug']) && $this->settings['debug'] == 'yes') ? true : false;	
 		
 		// The module settings page URL
-		$link = add_query_arg('page', 'woocommerce_settings', admin_url('admin.php'));
-		$link = add_query_arg('tab', 'payment_gateways', $link);
-		$link = add_query_arg('section', 'WC_Gateway_Payline', $link);
+		$link = add_query_arg('page', 'wc-settings', admin_url('admin.php'));
+		$link = add_query_arg('tab', 'checkout', $link);
+		$link = add_query_arg('section', 'payline', $link);
 		$this->admin_link = $link;
 		
 		// logger
