@@ -581,7 +581,7 @@ class WC_Gateway_Payline extends WC_Payment_Gateway {
 		$doWebPaymentRequest['payment']['contractNumber'] =  $this->settings['main_contract'];
 		
 		// ORDER
-		$doWebPaymentRequest['order']['ref'] = $order->id;
+		$doWebPaymentRequest['order']['ref'] = substr($order->id, 0, 50);
 		$doWebPaymentRequest['order']['country'] = $order->billing_country;
 		$doWebPaymentRequest['order']['taxes'] = round($order->get_total_tax());
 		$doWebPaymentRequest['order']['amount'] = $doWebPaymentRequest['payment']['amount'];
@@ -590,38 +590,40 @@ class WC_Gateway_Payline extends WC_Payment_Gateway {
 		
 		// BUYER
 		$doWebPaymentRequest['buyer']['title'] = 'M';
-		$doWebPaymentRequest['buyer']['lastName'] = $order->billing_last_name;
-		$doWebPaymentRequest['buyer']['firstName'] = $order->billing_first_name;
-		$doWebPaymentRequest['buyer']['customerId'] = $order->billing_email;
-		$doWebPaymentRequest['buyer']['email'] = $doWebPaymentRequest['buyer']['customerId'];
+		$doWebPaymentRequest['buyer']['lastName'] = substr($order->billing_last_name, 0, 100);
+		$doWebPaymentRequest['buyer']['firstName'] = substr($order->billing_first_name, 0, 100);
+		$doWebPaymentRequest['buyer']['customerId'] = substr($order->billing_email, 0, 50);
+		$doWebPaymentRequest['buyer']['email'] = substr($order->billing_email, 0, 150);
 		$doWebPaymentRequest['buyer']['ip'] = $_SERVER['REMOTE_ADDR'];
-		$doWebPaymentRequest['buyer']['mobilePhone'] = preg_replace("/[^0-9.]/", '', $order->billing_phone);
+		$doWebPaymentRequest['buyer']['mobilePhone'] = substr(preg_replace("/[^0-9.]/", '', $order->billing_phone), 0, 15);
 		
 		// BILLING ADDRESS
 		$doWebPaymentRequest['billingAddress']['name'] = $order->billing_first_name." ".$order->billing_last_name;
 		if($order->billing_company != null && strlen($order->billing_company) > 0){
 			$doWebPaymentRequest['billingAddress']['name'] .= ' ('.$order->billing_company.')';
 		}
+	        $doWebPaymentRequest['billingAddress']['name'] = substr($doWebPaymentRequest['billingAddress']['name'], 0, 100);
 		$doWebPaymentRequest['billingAddress']['firstName'] = $order->billing_first_name;
 		$doWebPaymentRequest['billingAddress']['lastName'] = $order->billing_last_name;
-		$doWebPaymentRequest['billingAddress']['street1'] = $order->billing_address_1;
-		$doWebPaymentRequest['billingAddress']['street2'] = $order->billing_address_2;
-		$doWebPaymentRequest['billingAddress']['cityName'] = $order->billing_city;
-		$doWebPaymentRequest['billingAddress']['zipCode'] = $order->billing_postcode;
+		$doWebPaymentRequest['billingAddress']['street1'] = substr($order->billing_address_1, 0, 100);
+		$doWebPaymentRequest['billingAddress']['street2'] = substr($order->billing_address_2, 0, 100);
+		$doWebPaymentRequest['billingAddress']['cityName'] = substr($order->billing_city, 0, 40);
+		$doWebPaymentRequest['billingAddress']['zipCode'] = substr($order->billing_postcode, 0, 20);
 		$doWebPaymentRequest['billingAddress']['country'] = $order->billing_country;
-		$doWebPaymentRequest['billingAddress']['phone'] = preg_replace("/[^0-9.]/", '', $order->billing_phone);
+		$doWebPaymentRequest['billingAddress']['phone'] = substr(preg_replace("/[^0-9.]/", '', $order->billing_phone), 0, 15);
 		
 		// SHIPPING ADDRESS
 		$doWebPaymentRequest['shippingAddress']['name'] = $order->shipping_first_name ." ".$order->shipping_last_name;
 		if($order->shipping_company != null && strlen($order->shipping_company) > 0){
 			$doWebPaymentRequest['shippingAddress']['name'] .= ' ('.$order->shipping_company.')';
 		}
+	        $doWebPaymentRequest['shippingAddress']['name'] = substr($doWebPaymentRequest['shippingAddress']['name'], 0, 100);
 		$doWebPaymentRequest['shippingAddress']['firstName'] = $order->shipping_first_name;
 		$doWebPaymentRequest['shippingAddress']['lastName'] = $order->shipping_last_name;
-		$doWebPaymentRequest['shippingAddress']['street1'] = $order->shipping_address_1;
-		$doWebPaymentRequest['shippingAddress']['street2'] = $order->shipping_address_2;
-		$doWebPaymentRequest['shippingAddress']['cityName'] = $order->shipping_city;
-		$doWebPaymentRequest['shippingAddress']['zipCode'] = $order->shipping_postcode;
+		$doWebPaymentRequest['shippingAddress']['street1'] = substr($order->shipping_address_1, 0, 100);
+		$doWebPaymentRequest['shippingAddress']['street2'] = substr($order->shipping_address_2, 0, 100);
+		$doWebPaymentRequest['shippingAddress']['cityName'] = substr($order->shipping_city, 0, 40);
+		$doWebPaymentRequest['shippingAddress']['zipCode'] = substr($order->shipping_postcode, 0, 20);
 		$doWebPaymentRequest['shippingAddress']['country'] = $order->shipping_country;
 		$doWebPaymentRequest['shippingAddress']['phone'] =  '';
 		
