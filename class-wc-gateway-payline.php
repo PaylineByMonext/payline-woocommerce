@@ -575,7 +575,7 @@ class WC_Gateway_Payline extends WC_Payment_Gateway {
     	$doWebPaymentRequest = array();
     	$doWebPaymentRequest['version'] = '14';
     	$doWebPaymentRequest['payment']['amount'] = round($order->get_total()*100);
-		$doWebPaymentRequest['payment']['currency'] = $this->_currencies[$order->get_order_currency()];
+		$doWebPaymentRequest['payment']['currency'] = $this->_currencies[$order->get_currency()];
 		$doWebPaymentRequest['payment']['action'] = $this->settings['payment_action'];
 		$doWebPaymentRequest['payment']['mode'] =  'CPT';
 		$doWebPaymentRequest['payment']['contractNumber'] =  $this->settings['main_contract'];
