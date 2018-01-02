@@ -599,7 +599,7 @@ class WC_Gateway_Payline extends WC_Payment_Gateway {
 
 		// BILLING ADDRESS
 		$doWebPaymentRequest['billingAddress']['name'] = $order->get_billing_first_name()." ".$order->get_billing_last_name();
-		if($order->billing_company != null && strlen($order->get_billing_company()) > 0){
+		if($order->get_billing_company() != null && strlen($order->get_billing_company()) > 0){
 			$doWebPaymentRequest['billingAddress']['name'] .= ' ('.$order->get_billing_company().')';
 		}
 		$doWebPaymentRequest['billingAddress']['firstName'] = $order->get_billing_first_name();
@@ -613,7 +613,7 @@ class WC_Gateway_Payline extends WC_Payment_Gateway {
 
 		// SHIPPING ADDRESS
 		$doWebPaymentRequest['shippingAddress']['name'] = $order->get_shipping_first_name() ." ".$order->get_shipping_last_name();
-		if($order->shipping_company != null && strlen($order->get_shipping_company()) > 0){
+		if($order->get_shipping_company() != null && strlen($order->get_shipping_company()) > 0){
 			$doWebPaymentRequest['shippingAddress']['name'] .= ' ('.$order->get_shipping_company().')';
 		}
 		$doWebPaymentRequest['shippingAddress']['firstName'] = $order->get_shipping_first_name();
