@@ -35,6 +35,7 @@ Changelog
 
 * 1.3.6 - 2018/01/02  
      Feature - woocommerce 3.x compatibility
+     Fix - Truncate buyer data before send it to Payline.
      
 * 1.3.5 - 2017/04/04  
      Feature - send buyer info mandatoty for Cetelem 3x / 4x
