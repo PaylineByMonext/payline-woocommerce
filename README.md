@@ -17,7 +17,7 @@ Requirements
 ------------
 
 This extension requires at least wooCommerce 2.3
-It's tested up to wooCommerce 2.6.4
+It's tested up to wooCommerce 2.6.4 and woocommerce 3.x
 
 
 Author
@@ -33,6 +33,9 @@ Payline is licensed under the LGPL-3.0+ License
 Changelog
 -------
 
+* 1.3.6 - 2018/01/02  
+     Feature - woocommerce 3.x compatibility
+     
 * 1.3.5 - 2017/04/04  
      Feature - send buyer info mandatoty for Cetelem 3x / 4x
      
