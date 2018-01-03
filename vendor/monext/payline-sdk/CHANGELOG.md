@@ -1,3 +1,18 @@
+* 4.52 (2017-10-16)
+  * new avs child node in transaction object
+  
+* 4.51 (2017-08-11)
+  * no structural changes
+  
+* 4.50.2 (2017-06-30)
+  * new details child node in doRefundRequest object
+
+* 4.50.1 (2017-05-09)
+  * add of certificate-based authentication endpoints  
+
+* 4.50 (2017-04-13)
+  * new merchantName parameter for doWebPayment, manageWebWallet and verifyEnrollment (name displayed on ACS)
+  * new attribute paymentData for object Card (used by Apple Pay only)
 
 * 4.49 (2017-01-05)
   * removal of autoload inclusion in main PaylineSDK.php file

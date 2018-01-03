@@ -6,5 +6,5 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
-    'Payline\\' => array($vendorDir . '/monext/payline-sdk/src/Payline', $vendorDir . '/monext/payline-tools-sdk/src/PaylineTools'),
+    'Payline\\' => array($vendorDir . '/monext/payline-tools-sdk/src/PaylineTools'),
 );
