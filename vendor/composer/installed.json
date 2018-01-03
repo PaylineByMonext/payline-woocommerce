@@ -17,7 +17,7 @@
         "require": {
             "php": ">=5.3.0"
         },
-        "time": "2016-10-10 12:19:37",
+        "time": "2016-10-10T12:19:37+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -49,18 +49,111 @@
         ]
     },
     {
-        "name": "monolog/monolog",
-        "version": "1.22.0",
-        "version_normalized": "1.22.0.0",
+        "name": "monext/payline-tools-sdk",
+        "version": "0.9",
+        "version_normalized": "0.9.0.0",
         "source": {
             "type": "git",
-            "url": "https://github.com/Seldaek/monolog.git",
-            "reference": "bad29cb8d18ab0315e6c477751418a82c850d558"
+            "url": "https://github.com/PaylineGitHub/payline-tools-php-sdk.git",
+            "reference": "7824589fd680e2140d4298b59f521604520de4b6"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/Seldaek/monolog/zipball/bad29cb8d18ab0315e6c477751418a82c850d558",
-            "reference": "bad29cb8d18ab0315e6c477751418a82c850d558",
+            "url": "https://api.github.com/repos/PaylineGitHub/payline-tools-php-sdk/zipball/7824589fd680e2140d4298b59f521604520de4b6",
+            "reference": "7824589fd680e2140d4298b59f521604520de4b6",
+            "shasum": ""
+        },
+        "require": {
+            "monolog/monolog": "1.*",
+            "php": ">=5.3.0"
+        },
+        "time": "2016-03-21T14:13:37+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Payline\\": "src/PaylineTools"
+            },
+            "psr-0": {
+                "Payline\\": "src/PaylineTools"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "LGPL-3.0"
+        ],
+        "authors": [
+            {
+                "name": "Fabien SUAREZ",
+                "email": "fabien.suarez@payline.com",
+                "homepage": "http://www.payline.com"
+            }
+        ],
+        "description": "Payline Tools library for PHP",
+        "keywords": [
+            "Monext",
+            "Payline",
+            "tools"
+        ]
+    },
+    {
+        "name": "monext/payline-sdk",
+        "version": "4.52.1",
+        "version_normalized": "4.52.1.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/PaylineByMonext/payline-php-sdk.git",
+            "reference": "25a04234f2a826c572e104834f6f851606137ff9"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/PaylineByMonext/payline-php-sdk/zipball/25a04234f2a826c572e104834f6f851606137ff9",
+            "reference": "25a04234f2a826c572e104834f6f851606137ff9",
+            "shasum": ""
+        },
+        "require": {
+            "monolog/monolog": "1.*",
+            "php": ">=5.3.0"
+        },
+        "time": "2017-10-24T09:55:59+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Payline\\": "src/Payline"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "LGPL-3.0"
+        ],
+        "authors": [
+            {
+                "name": "Fabien SUAREZ",
+                "email": "fabien.suarez@payline.com",
+                "homepage": "http://www.payline.com"
+            }
+        ],
+        "description": "Payline library for PHP",
+        "keywords": [
+            "Monext",
+            "Payline",
+            "payment"
+        ]
+    },
+    {
+        "name": "monolog/monolog",
+        "version": "1.23.0",
+        "version_normalized": "1.23.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/Seldaek/monolog.git",
+            "reference": "fd8c787753b3a2ad11bc60c063cff1358a32a3b4"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/Seldaek/monolog/zipball/fd8c787753b3a2ad11bc60c063cff1358a32a3b4",
+            "reference": "fd8c787753b3a2ad11bc60c063cff1358a32a3b4",
             "shasum": ""
         },
         "require": {
@@ -81,7 +174,7 @@
             "phpunit/phpunit-mock-objects": "2.3.0",
             "ruflin/elastica": ">=0.90 <3.0",
             "sentry/sentry": "^0.13",
-            "swiftmailer/swiftmailer": "~5.3"
+            "swiftmailer/swiftmailer": "^5.3|^6.0"
         },
         "suggest": {
             "aws/aws-sdk-php": "Allow sending log messages to AWS services like DynamoDB",
@@ -96,7 +189,7 @@
             "ruflin/elastica": "Allow sending log messages to an Elastic Search server",
             "sentry/sentry": "Allow sending log messages to a Sentry server"
         },
-        "time": "2016-11-26 00:15:39",
+        "time": "2017-06-19T01:22:40+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -126,102 +219,6 @@
             "log",
             "logging",
             "psr-3"
-        ]
-    },
-    {
-        "name": "monext/payline-sdk",
-        "version": "dev-master",
-        "version_normalized": "9999999-dev",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/PaylineByMonext/payline-php-sdk.git",
-            "reference": "e300e9d7520f81270035126856e7b36ed340f301"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/PaylineByMonext/payline-php-sdk/zipball/e300e9d7520f81270035126856e7b36ed340f301",
-            "reference": "e300e9d7520f81270035126856e7b36ed340f301",
-            "shasum": ""
-        },
-        "require": {
-            "monolog/monolog": "1.*",
-            "php": ">=5.3.0"
-        },
-        "time": "2017-01-05 15:56:55",
-        "type": "library",
-        "installation-source": "dist",
-        "autoload": {
-            "psr-4": {
-                "Payline\\": "src/Payline"
-            },
-            "psr-0": {
-                "Payline\\": "src/Payline"
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "LGPL-3.0"
-        ],
-        "authors": [
-            {
-                "name": "Fabien SUAREZ",
-                "email": "fabien.suarez@payline.com",
-                "homepage": "http://www.payline.com"
-            }
-        ],
-        "description": "Payline library for PHP",
-        "keywords": [
-            "Monext",
-            "Payline",
-            "payment"
-        ]
-    },
-    {
-        "name": "monext/payline-tools-sdk",
-        "version": "0.9",
-        "version_normalized": "0.9.0.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/PaylineGitHub/payline-tools-php-sdk.git",
-            "reference": "7824589fd680e2140d4298b59f521604520de4b6"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/PaylineGitHub/payline-tools-php-sdk/zipball/7824589fd680e2140d4298b59f521604520de4b6",
-            "reference": "7824589fd680e2140d4298b59f521604520de4b6",
-            "shasum": ""
-        },
-        "require": {
-            "monolog/monolog": "1.*",
-            "php": ">=5.3.0"
-        },
-        "time": "2016-03-21 14:13:37",
-        "type": "library",
-        "installation-source": "dist",
-        "autoload": {
-            "psr-4": {
-                "Payline\\": "src/PaylineTools"
-            },
-            "psr-0": {
-                "Payline\\": "src/PaylineTools"
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "LGPL-3.0"
-        ],
-        "authors": [
-            {
-                "name": "Fabien SUAREZ",
-                "email": "fabien.suarez@payline.com",
-                "homepage": "http://www.payline.com"
-            }
-        ],
-        "description": "Payline Tools library for PHP",
-        "keywords": [
-            "Monext",
-            "Payline",
-            "tools"
         ]
     }
 ]
