@@ -704,7 +704,7 @@ class WC_Gateway_Payline extends WC_Payment_Gateway {
 				update_post_meta((int) $orderId, 'Card number', $res['card']['number']);
 				update_post_meta((int) $orderId, 'Payment mean', $res['card']['type']);
 				update_post_meta((int) $orderId, 'Card expiry', $res['card']['expirationDate']);
-	    		$order->payment_complete();
+	    		$order->payment_complete($res['transaction']['id']);
 	    		wp_redirect($this->get_return_url($order));
 	    		die();
 	    	}elseif ($res['result']['code'] == '04003'){
