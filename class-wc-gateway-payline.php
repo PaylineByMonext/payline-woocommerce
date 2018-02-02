@@ -276,7 +276,7 @@ class WC_Gateway_Payline extends WC_Payment_Gateway {
     			<td width="100%">
 	    			<p>
 		    			<?php echo "Payline extension v".$this->extensionVersion;?><br/>
-		    			Developed by <a href="http://www.monext.net" target="#">Monext</a> for WooCommerce 2.3 to 2.6.4<br/>
+		    			Developed by <a href="http://www.monext.net" target="#">Monext</a> for WooCommerce 2.6 to 3.3<br/>
 		    			<?php
 		    			$mailSubject = "Question about WooCommerce pluggin - merchant ".$this->settings['merchant_id'];
 		    			if(strcmp("PROD",$this->settings['environment'])==0){
