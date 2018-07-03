@@ -592,8 +592,8 @@ class WC_Gateway_Payline extends WC_Payment_Gateway {
 		$doWebPaymentRequest['buyer']['title'] = 'M';
 		$doWebPaymentRequest['buyer']['lastName'] = substr($order->get_billing_last_name(), 0, 100);
 		$doWebPaymentRequest['buyer']['firstName'] = substr($order->get_billing_first_name(), 0, 100);
-		$doWebPaymentRequest['buyer']['customerId'] = $order->get_billing_email();
-		$doWebPaymentRequest['buyer']['email'] = $doWebPaymentRequest['buyer']['customerId'];
+		$doWebPaymentRequest['buyer']['customerId'] = substr($order->get_billing_email(), 0, 50);
+		$doWebPaymentRequest['buyer']['email'] = substr($order->get_billing_email(), 0, 150);
 		$doWebPaymentRequest['buyer']['ip'] = $_SERVER['REMOTE_ADDR'];
 		$doWebPaymentRequest['buyer']['mobilePhone'] = substr(preg_replace("/[^0-9.]/", '', $order->get_billing_phone()), 0, 15);
 
