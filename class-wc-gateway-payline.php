@@ -674,6 +674,16 @@ class WC_Gateway_Payline extends WC_Payment_Gateway {
 			exit;
 		}
 
+		if($_GET['token']){
+			$token = esc_html($_GET['token']);
+		}
+		if($_GET['paylinetoken']){
+			$token = esc_html($_GET['paylinetoken']);
+		}
+		if(empty($token)){
+			exit;
+		}
+		
     	$this->SDK = new PaylineSDK(
     		$this->settings['merchant_id'],
     		$this->settings['access_key'],
@@ -684,16 +694,16 @@ class WC_Gateway_Payline extends WC_Payment_Gateway {
     		$this->settings['environment']
     	);
     	$this->SDK->usedBy('wooComm '.$this->extensionVersion);
-    	$res = $this->SDK->getWebPaymentDetails(array('token'=>$_GET['token'],'version'=>'2'));
+    	$res = $this->SDK->getWebPaymentDetails(array('token'=>$token,'version'=>'2'));
     	if($res['result']['code'] == PaylineSDK::ERR_CODE){
-    		$this->SDK->getLogger()->addError('Unable to call Payline for token '.$_GET['token']);
+    		$this->SDK->getLogger()->addError('Unable to call Payline for token '.$token);
     		exit;
     	}else{
     		$orderId = $res['order']['ref'];
     		$order = new WC_Order($orderId);
     		$expectedToken = get_option('plnTokenForOrder_'.$orderId);
-    		if($expectedToken != $_GET['token']){
-    		    $message = 'Token '.$_GET['token'].' does not match expected '.$expectedToken.' for order '.$orderId;
+    		if($expectedToken != $token){
+    		    $message = 'Token '.$token.' does not match expected '.$expectedToken.' for order '.$orderId;
     		    $this->SDK->getLogger()->addError($message);
     		    $order->add_order_note($message);
     		    die($message);
