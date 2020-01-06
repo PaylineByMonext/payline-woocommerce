@@ -667,8 +667,8 @@ class WC_Gateway_Payline extends WC_Payment_Gateway {
 			$doWebPaymentRequest['secondContracts'] = $secondContracts;
 		}
 
-		$tokenOptionKey = 'plnTokenForOrder_' . $requestParams['order']['ref'];
 		$requestParams = apply_filters( 'payline_do_web_payment_request_params', $doWebPaymentRequest, $order );
+		$tokenOptionKey = 'plnTokenForOrder_' . $requestParams['order']['ref'];
 
 		do_action( 'payline_before_do_web_payment', $requestParams, $this );
 
@@ -677,12 +677,12 @@ class WC_Gateway_Payline extends WC_Payment_Gateway {
 		
 			// Prevent to send the request again on refresh.
 			if ( empty( $_GET['paylinetoken'] ) ) {
-				$result = $this->SDK->doWebPayment($requestParams);
+				$result = $this->SDK->doWebPayment( $requestParams );
 				do_action( 'payline_after_do_web_payment', $result, $this );
 
 				if ( $result['result']['code'] === '00000' ) {
 					// save association between order and payment session token
-					update_option( 'plnTokenForOrder_' . $requestParams['order']['ref'], $result['token'] );
+					update_option( $tokenOptionKey, $result['token'] );
 					$token = $result['token'];
 				} else {
 					echo '<div class="PaylineWidget"><p class="pl-message pl-message-error">' . sprintf( __( 'An error occured while displaying the payment form (error code %s : %s). Please contact us.', 'payline' ), $result['result']['code'], $result['result']['longMessage'] ) . '</p></div>';
@@ -699,7 +699,7 @@ class WC_Gateway_Payline extends WC_Payment_Gateway {
 			);
 		} else {
 			// EXECUTE
-			$result = $this->SDK->doWebPayment( apply_filters( 'payline_do_web_payment_request_params', $requestParams ) );
+			$result = $this->SDK->doWebPayment( $requestParams );
 			do_action( 'payline_after_do_web_payment', $result, $this );
 
 			if ( $result['result']['code'] === '00000' ) {
