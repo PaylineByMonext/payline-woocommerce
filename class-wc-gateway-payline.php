@@ -324,7 +324,7 @@ class WC_Gateway_Payline extends WC_Payment_Gateway {
     			$this->settings['environment']
     		);
     		$this->SDK->usedBy('wooComm '.$this->extensionVersion);
-    		$res = $this->SDK->getEncryptionKey(null);
+    		$res = $this->SDK->getEncryptionKey([]);
     		if($res['result']['code'] == '00000'){
     			echo "<div class='inline updated'>";
     			echo "<p>".__( 'Your settings is correct, connexion with Payline is established', 'payline')."</p>";
@@ -694,7 +694,7 @@ class WC_Gateway_Payline extends WC_Payment_Gateway {
 			}
 
 			printf(
-				'<div id="PaylineWidget" data-token="%s" data-template="column" data-embeddedredirectionallowed="false"></div>',
+				'<div id="PaylineWidget" data-token="%s" data-template="column" data-embeddedredirectionallowed="true"></div>',
 				$token
 			);
 		} else {
@@ -706,12 +706,12 @@ class WC_Gateway_Payline extends WC_Payment_Gateway {
 				// save association between order and payment session token so that the callback can check that the response is valid.
 				update_option( $tokenOptionKey, $result['token'] );
 				header( 'Location: ' . $result['redirectURL'] );
+
+				exit;
 			} else {
 				echo '<p>' . sprintf( __( 'You can\'t be redirected to payment page (error code ' . $result['result']['code'] . ' : ' . $result['result']['longMessage'] . '). Please contact us.', 'payline' ), 'Payline' ) . '</p>';
 			}
 		}
-
-		exit;
     }
 
 	function payline_callback() {
