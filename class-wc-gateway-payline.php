@@ -324,7 +324,7 @@ class WC_Gateway_Payline extends WC_Payment_Gateway {
     			$this->settings['environment']
     		);
     		$this->SDK->usedBy('wooComm '.$this->extensionVersion);
-    		$res = $this->SDK->getEncryptionKey(null);
+    		$res = $this->SDK->getEncryptionKey([]);
     		if($res['result']['code'] == '00000'){
     			echo "<div class='inline updated'>";
     			echo "<p>".__( 'Your settings is correct, connexion with Payline is established', 'payline')."</p>";
@@ -515,6 +515,16 @@ class WC_Gateway_Payline extends WC_Payment_Gateway {
     		),
     		'description' => __('Type of transaction created after a payment', 'payline')
     	);
+    	$this->form_fields['widget_integration'] = array(
+    		'title' => __( 'Widget integration mode', 'payline' ),
+    	    'type' => 'select',
+			'default' => 'redirection',
+			'options' => array(
+    			'in-shop' => __( 'In-Shop mode', 'payline' ),
+    			'redirection' => __( 'Redirection mode', 'payline' )
+    		),
+    	    'description' => sprintf( __( 'Integration mode of the payment widget in the shop. See %s for more details.', 'payline' ), '<a href="https://payline.atlassian.net/wiki/spaces/DT/pages/24248408/Pages+Web">https://payline.atlassian.net/wiki/spaces/DT/pages/24248408/Pages+Web</a>' )
+    	);
     	$this->form_fields['custom_page_code'] = array(
     		'title' => __('Custom page code', 'payline'),
     	    'type' => 'text',
@@ -657,15 +667,51 @@ class WC_Gateway_Payline extends WC_Payment_Gateway {
 			$doWebPaymentRequest['secondContracts'] = $secondContracts;
 		}
 
-		// EXECUTE
-		$result = $this->SDK->doWebPayment($doWebPaymentRequest);
-		if($result['result']['code'] == '00000'){
-		    update_option('plnTokenForOrder_'.$doWebPaymentRequest['order']['ref'],$result['token']); // save association between order and payment session token
-			header('Location: '.$result['redirectURL']);
-		}else{
-			echo '<p>'.sprintf(__('You can\'t be redirected to payment page (error code '.$result['result']['code'].' : '.$result['result']['longMessage'].'). Please contact us.', 'payline'), 'Payline').'</p>';
+		$requestParams = apply_filters( 'payline_do_web_payment_request_params', $doWebPaymentRequest, $order );
+		$tokenOptionKey = 'plnTokenForOrder_' . $requestParams['order']['ref'];
+
+		do_action( 'payline_before_do_web_payment', $requestParams, $this );
+
+		if ( $this->settings['widget_integration'] === 'in-shop' ) {
+			$token = NULL;
+		
+			// Prevent to send the request again on refresh.
+			if ( empty( $_GET['paylinetoken'] ) ) {
+				$result = $this->SDK->doWebPayment( $requestParams );
+				do_action( 'payline_after_do_web_payment', $result, $this );
+
+				if ( $result['result']['code'] === '00000' ) {
+					// save association between order and payment session token
+					update_option( $tokenOptionKey, $result['token'] );
+					$token = $result['token'];
+				} else {
+					echo '<div class="PaylineWidget"><p class="pl-message pl-message-error">' . sprintf( __( 'An error occured while displaying the payment form (error code %s : %s). Please contact us.', 'payline' ), $result['result']['code'], $result['result']['longMessage'] ) . '</p></div>';
+					exit;
+				}
+
+			} else {
+				$token = $_GET['paylinetoken'];
+			}
+
+			printf(
+				'<div id="PaylineWidget" data-token="%s" data-template="column" data-embeddedredirectionallowed="true"></div>',
+				$token
+			);
+		} else {
+			// EXECUTE
+			$result = $this->SDK->doWebPayment( $requestParams );
+			do_action( 'payline_after_do_web_payment', $result, $this );
+
+			if ( $result['result']['code'] === '00000' ) {
+				// save association between order and payment session token so that the callback can check that the response is valid.
+				update_option( $tokenOptionKey, $result['token'] );
+				header( 'Location: ' . $result['redirectURL'] );
+
+				exit;
+			} else {
+				echo '<p>' . sprintf( __( 'You can\'t be redirected to payment page (error code ' . $result['result']['code'] . ' : ' . $result['result']['longMessage'] . '). Please contact us.', 'payline' ), 'Payline' ) . '</p>';
+			}
 		}
-		exit;
     }
 
 	function payline_callback() {
@@ -697,7 +743,8 @@ class WC_Gateway_Payline extends WC_Payment_Gateway {
     		    $this->SDK->getLogger()->addError($message);
     		    $order->add_order_note($message);
     		    die($message);
-    		}
+			}
+			do_action( 'payline_payment_callback', $res, $order );
 	    	if($res['result']['code'] == '00000'){
 	    		// Store transaction details
 				update_post_meta((int) $orderId, 'Transaction ID', $res['transaction']['id']);
