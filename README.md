@@ -23,7 +23,9 @@ It's tested up to WooCommerce 3.3.0.
 Author
 ------
 
-Fabien SUAREZ - <fabien.suarez@payline.com>
+* Fabien SUAREZ - <fabien.suarez@payline.com>
+* Nicolas MOLLET (https://www.thalasso-saintmalo.com)
+
 
 License
 -------
@@ -33,8 +35,13 @@ Payline is licensed under the LGPL-3.0+ License
 Changelog
 -------
 
-* 1.3.6 - 2018/01/02  
+* 1.3.7 - 2020/12/01  
      Feature - WooCommerce 3.x compatibility (not compatible anymore with WooCommerce versions below 2.6)
+     Transaction id compatibility, Translation files
+     Fix on token get data (versus paylinetoken)
+
+* 1.3.6 - 2018/01/02  
+
      Fix - Truncate buyer data before send it to Payline.
      
 * 1.3.5 - 2017/04/04  
