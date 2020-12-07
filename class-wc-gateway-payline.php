@@ -677,32 +677,43 @@ class WC_Gateway_Payline extends WC_Payment_Gateway {
 			exit;
 		}
 
-		$this->SDK = new PaylineSDK(
-			$this->settings['merchant_id'],
-			$this->settings['access_key'],
-			$this->settings['proxy_host'],
-			$this->settings['proxy_port'],
-			$this->settings['proxy_login'],
-			$this->settings['proxy_password'],
-			$this->settings['environment']
-		);
-		$this->SDK->usedBy('wooComm '.$this->extensionVersion);
-		$res = $this->SDK->getWebPaymentDetails(array('token'=>$_GET['token'],'version'=>'2'));
-		if($res['result']['code'] == PaylineSDK::ERR_CODE){
-			$this->SDK->getLogger()->addError('Unable to call Payline for token '.$_GET['token']);
-			exit;
-		}else{
-			$orderId = $res['order']['ref'];
-			$order = wc_get_order($orderId);
-			$expectedToken = get_option('plnTokenForOrder_'.$orderId);
-			if($expectedToken != $_GET['token']){
-				$message = sprintf(__('Token %s does not match expected %s for order %s', 'payline'), wc_clean($_GET['token']), $expectedToken, $orderId);
-				$this->SDK->getLogger()->addError($message);
-				$order->add_order_note($message);
-				die($message);
-			}
-			if($res['result']['code'] == '00000'){
-				// Store transaction details
+        $token = false;
+        if($_GET['token']){
+            $token = esc_html($_GET['token']);
+        }
+        if($_GET['paylinetoken']){
+            $token = esc_html($_GET['paylinetoken']);
+        }
+        if(empty($token)){
+            exit;
+        }
+
+        $this->SDK = new PaylineSDK(
+            $this->settings['merchant_id'],
+            $this->settings['access_key'],
+            $this->settings['proxy_host'],
+            $this->settings['proxy_port'],
+            $this->settings['proxy_login'],
+            $this->settings['proxy_password'],
+            $this->settings['environment']
+        );
+        $this->SDK->usedBy('wooComm '.$this->extensionVersion);
+        $res = $this->SDK->getWebPaymentDetails(array('token'=>$token,'version'=>'2'));
+        if($res['result']['code'] == PaylineSDK::ERR_CODE) {
+            $this->SDK->getLogger()->addError('Unable to call Payline for token '.$token);
+            exit;
+        } else {
+            $orderId = $res['order']['ref'];
+            $order = wc_get_order($orderId);
+            $expectedToken = get_option('plnTokenForOrder_'.$orderId);
+            if($expectedToken != $token){
+                $message = sprintf(__('Token %s does not match expected %s for order %s', 'payline'), wc_clean($token), $expectedToken, $orderId);
+                $this->SDK->getLogger()->addError($message);
+                $order->add_order_note($message);
+                die($message);
+            }
+            if($res['result']['code'] == '00000'){
+                // Store transaction details
 				update_post_meta((int) $orderId, 'Transaction ID', $res['transaction']['id']);
 				update_post_meta((int) $orderId, 'Card number', $res['card']['number']);
 				update_post_meta((int) $orderId, 'Payment mean', $res['card']['type']);
