@@ -35,6 +35,9 @@ Payline is licensed under the LGPL-3.0+ License
 Changelog
 -------
 
+* 1.4
+     Add widget integration
+
 * 1.3.7 - 2020/12/01  
      Feature - WooCommerce 3.x compatibility (not compatible anymore with WooCommerce versions below 2.6)
      Transaction id compatibility, Translation files
