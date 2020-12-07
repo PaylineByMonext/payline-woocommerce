@@ -581,7 +581,8 @@ class WC_Gateway_Payline extends WC_Payment_Gateway {
 		$doWebPaymentRequest['payment']['contractNumber'] =  $this->settings['main_contract'];
 
 		// ORDER
-		$doWebPaymentRequest['order']['ref'] = $order->get_id();
+
+		$doWebPaymentRequest['order']['ref'] = substr($order->get_id(), 0, 50);
 		$doWebPaymentRequest['order']['country'] = $order->get_billing_country();
 		$doWebPaymentRequest['order']['taxes'] = round($order->get_total_tax());
 		$doWebPaymentRequest['order']['amount'] = $doWebPaymentRequest['payment']['amount'];
