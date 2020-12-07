@@ -16,8 +16,8 @@ About
 Requirements
 ------------
 
-This extension requires at least wooCommerce 2.3
-It's tested up to wooCommerce 2.6.4 and woocommerce 3.x
+This extension requires at least wooCommerce 2.6.
+It's tested up to WooCommerce 3.3.0.
 
 
 Author
@@ -34,7 +34,7 @@ Changelog
 -------
 
 * 1.3.6 - 2018/01/02  
-     Feature - woocommerce 3.x compatibility
+     Feature - WooCommerce 3.x compatibility (not compatible anymore with WooCommerce versions below 2.6)
      Fix - Truncate buyer data before send it to Payline.
      
 * 1.3.5 - 2017/04/04  
