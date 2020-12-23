@@ -2,15 +2,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Payline\n"
 "POT-Creation-Date: 2017-02-08 09:59+0100\n"
-"PO-Revision-Date: 2020-12-07 15:12+0100\n"
+"PO-Revision-Date: 2020-12-23 16:22+0000\n"
 "Last-Translator: \n"
-"Language-Team: L'agence du web <contact@lagenceduweb.com>\n"
+"Language-Team: Français\n"
 "Language: fr_FR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Poedit 2.4.2\n"
+"X-Generator: Loco https://localise.biz/\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-WPHeader: woocommerce-payline.php\n"
 "X-Poedit-SourceCharset: UTF-8\n"
@@ -20,273 +20,25 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPathExcluded-0: *.js\n"
 
-#: class-wc-gateway-payline.php:213
-msgid "Pay via Payline"
-msgstr "Payer avec Payline"
-
-#: class-wc-gateway-payline.php:295
-#, php-format
-msgid "Your %s configuration parameters are reset."
-msgstr "Les paramètres de configuration de votre %s sont réinitialisés."
-
-#: class-wc-gateway-payline.php:301 class-wc-gateway-payline.php:305
-#: class-wc-gateway-payline.php:310
+#: class-wc-gateway-payline.php:516 class-wc-gateway-payline.php:520
+#: class-wc-gateway-payline.php:525
 #, php-format
 msgid "%s is mandatory"
 msgstr "%s est obligatoire"
 
-#: class-wc-gateway-payline.php:301 class-wc-gateway-payline.php:439
-msgid "Merchant ID"
-msgstr "Identifiant Payline"
-
-#: class-wc-gateway-payline.php:305
+#: class-wc-gateway-payline.php:520
 msgid "Access Key"
 msgstr "Clé d'accès"
 
-#: class-wc-gateway-payline.php:310 class-wc-gateway-payline.php:520
-msgid "Main contract number"
-msgstr "Numéro du contrat"
-
-#: class-wc-gateway-payline.php:326
-msgid "Your settings is correct, connexion with Payline is established"
-msgstr "Vos paramètres sont corrects, connexion avec Payline établie"
-
-#: class-wc-gateway-payline.php:328
-msgid "You are in homologation mode, payments are simulated !"
-msgstr "Vous êtes en mode de test, les paiements sont simulés!"
-
-#: class-wc-gateway-payline.php:333 class-wc-gateway-payline.php:335
-#, php-format
-msgid "Unable to connect to Payline, check your %s"
-msgstr "Impossible de se connecter à Payline, vérifiez votre%s"
-
-#: class-wc-gateway-payline.php:333 class-wc-gateway-payline.php:435
-msgid "PAYLINE GATEWAY ACCESS"
-msgstr "ACCES PASSERELLE PAYLINE"
-
-#: class-wc-gateway-payline.php:335 class-wc-gateway-payline.php:465
-msgid "PROXY SETTINGS"
-msgstr "PARAMETRES PROXY"
-
-#: class-wc-gateway-payline.php:337
-#, php-format
-msgid "Unable to connect to Payline (code %s : %s)"
-msgstr "Impossible de se connecter à Payline (Code%s:%s)"
-
-#: class-wc-gateway-payline.php:361
-msgid "Reset configuration"
-msgstr "Réinitialiser la configuration"
-
-#: class-wc-gateway-payline.php:383 class-wc-gateway-payline.php:389
-msgid "All"
-msgstr "Tout"
-
-#: class-wc-gateway-payline.php:402
-msgid "BASE SETTINGS"
-msgstr "PARAMETRES DE BASE"
-
-#: class-wc-gateway-payline.php:406
-msgid "Status"
-msgstr "Statut"
-
-#: class-wc-gateway-payline.php:408
-#, php-format
-msgid "Enable %s"
-msgstr "Activer %s"
-
-#: class-wc-gateway-payline.php:412
-msgid "Title"
-msgstr "Titre"
-
-#: class-wc-gateway-payline.php:414
-msgid "This controls the title which the user sees during checkout."
-msgstr ""
-"Libellé sous lequel le paiement via Payline est proposé à l’acheteur dans le "
-"processus de commande."
-
-#: class-wc-gateway-payline.php:418
-msgid "Description"
-msgstr "Description"
-
-#: class-wc-gateway-payline.php:420
-msgid "This controls the description which the user sees during checkout."
-msgstr ""
-"La description qui est affichée à l’utilisateur lorsque la méthode Payline "
-"est sélectionnée."
-
-#: class-wc-gateway-payline.php:421
-#, php-format
-msgid "You will be redirected on %s secured pages at the end of your order."
-msgstr ""
-"Vous allez être redirigé sur les pages sécurisées de %s à la fin de votre "
-"commande."
-
-#: class-wc-gateway-payline.php:424
-msgid "Debug logging"
-msgstr "Journal des logs"
-
-#: class-wc-gateway-payline.php:426
-msgid "Enable"
-msgstr "Activer"
-
-#: class-wc-gateway-payline.php:428
-#, php-format
-msgid ""
-"Log %s events, such as requests, inside <code>woocommerce/logs/%s.txt</code>"
-msgstr ""
-"Tracer les évènements relatifs à %s, dans le fichier : <code>woocommerce/"
-"logs/%s.txt</code>"
-
-#: class-wc-gateway-payline.php:442
-msgid "Your Payline account identifier"
-msgstr "Votre identifiant de compte Payline"
-
-#: class-wc-gateway-payline.php:445
+#: class-wc-gateway-payline.php:343
 msgid "Access key"
 msgstr "Clé d'accès"
 
-#: class-wc-gateway-payline.php:448
-#, php-format
-msgid ""
-"Password used to call %s web services (available in the %s administration "
-"center)"
-msgstr ""
-"Mot de passe utilisé pour appeler les services web %s (disponible dans le "
-"centre d'administration %s)"
+#: class-wc-gateway-payline.php:287 class-wc-gateway-payline.php:592
+msgid "All"
+msgstr "Tout"
 
-#: class-wc-gateway-payline.php:451
-msgid "Target environment"
-msgstr "Environnement cible"
-
-#: class-wc-gateway-payline.php:455
-msgid "Homologation"
-msgstr "Homologation (test)"
-
-#: class-wc-gateway-payline.php:456
-msgid "Production"
-msgstr "Production"
-
-#: class-wc-gateway-payline.php:458
-msgid "Payline destination environement of your requests"
-msgstr "Environnement de destination Payline de vos demandes"
-
-#: class-wc-gateway-payline.php:469
-msgid "Host"
-msgstr "Hôte"
-
-#: class-wc-gateway-payline.php:473
-msgid "Port"
-msgstr "Port"
-
-#: class-wc-gateway-payline.php:477
-msgid "Login"
-msgstr "Utilisateur"
-
-#: class-wc-gateway-payline.php:481
-msgid "Password"
-msgstr "Mot de passe"
-
-#: class-wc-gateway-payline.php:489
-msgid "PAYMENT SETTINGS"
-msgstr "PARAMETRES DE PAIEMENT"
-
-#: class-wc-gateway-payline.php:493
-msgid "Default language"
-msgstr "Langue par défaut"
-
-#: class-wc-gateway-payline.php:497
-msgid "Based on browser"
-msgstr "Sur la base de navigateur"
-
-#: class-wc-gateway-payline.php:498
-msgid "fr"
-msgstr "fr"
-
-#: class-wc-gateway-payline.php:499
-msgid "en"
-msgstr "en"
-
-#: class-wc-gateway-payline.php:500
-msgid "pt"
-msgstr "pt"
-
-#: class-wc-gateway-payline.php:502
-msgid "Language used to display Payline web payment pages"
-msgstr "Langue utilisée pour afficher les pages de paiement Payline web"
-
-#: class-wc-gateway-payline.php:505
-msgid "Payment action"
-msgstr "Action de paiement"
-
-#: class-wc-gateway-payline.php:509
-msgid "Authorization"
-msgstr "Autorisation (validation nécessaire sous 7 jours)"
-
-#: class-wc-gateway-payline.php:510
-msgid "Authorization + Capture"
-msgstr "Autorisation + Capture (paiement immédiat)"
-
-#: class-wc-gateway-payline.php:512
-msgid "Type of transaction created after a payment"
-msgstr "Type de transaction créée après un paiement"
-
-#: class-wc-gateway-payline.php:519
-msgid "Widget integration mode"
-msgstr "Mode d'intégration du Widget"
-
-#: class-wc-gateway-payline.php:523
-msgid "In-Shop mode"
-msgstr "Mode in-Shop"
-
-#: class-wc-gateway-payline.php:524
-msgid "Redirection mode"
-msgstr "Mode Redirection"
-
-#: class-wc-gateway-payline.php:526
-#, php-format
-msgid ""
-"Integration mode of the payment widget in the shop. Contact payline support for more details"
-msgstr ""
-"Mode d'intégration du widget de paiement dans la boutique. Contacter le support payline pour plus de détails"
-
-#: class-wc-gateway-payline.php:529
-msgid "Custom page code"
-msgstr "Page personnalisée"
-
-#: class-wc-gateway-payline.php:517
-msgid ""
-"Code of payment page customization created in Payline Administration Center"
-msgstr ""
-"Code de la page personnalisée de paiement, créée dans le centre "
-"d'administration de  Payline"
-
-#: class-wc-gateway-payline.php:522
-msgid "Contract number that determines the point of sale used in Payline"
-msgstr "Numéro de contrat qui détermine le point de vente utilisé dans Payline"
-
-#: class-wc-gateway-payline.php:525
-msgid "Primary contracts"
-msgstr "Contrats primaires"
-
-#: class-wc-gateway-payline.php:527
-msgid ""
-"Contracts displayed on web payment page - step 1. Values must be separated "
-"by ;"
-msgstr ""
-"Contrats affichés sur la page de paiement de Web - étape 1. Les valeurs "
-"doivent être séparées par ;"
-
-#: class-wc-gateway-payline.php:530
-msgid "Secondary contracts"
-msgstr "Contrats secondaires"
-
-#: class-wc-gateway-payline.php:532
-msgid "Contracts displayed for payment retry. Values must be separated by ;"
-msgstr ""
-"Les contrats affichés pour le paiement \"Réessayer\". Les valeurs doivent "
-"être séparées par ;"
-
-#: class-wc-gateway-payline.php:688
+#: class-wc-gateway-payline.php:737
 #, php-format
 msgid ""
 "An error occured while displaying the payment form (error code %s : %s). "
@@ -295,47 +47,257 @@ msgstr ""
 "Une erreur s'est produite lors de l'affichage du formulaire de paiement "
 "(code d'erreur %s : %s). Veuillez nous contactez."
 
-#: class-wc-gateway-payline.php:668
-#, php-format
+#: class-wc-gateway-payline.php:407
+msgid "Authorization"
+msgstr "Autorisation (validation nécessaire sous 7 jours)"
+
+#: class-wc-gateway-payline.php:408
+msgid "Authorization + Capture"
+msgstr "Autorisation + Capture (paiement immédiat)"
+
+#: class-wc-gateway-payline.php:300
+msgid "BASE SETTINGS"
+msgstr "PARAMETRES DE BASE"
+
+#: class-wc-gateway-payline.php:395
+msgid "Based on browser"
+msgstr "Sur la base de navigateur"
+
+#: class-wc-gateway-payline.php:836
+msgid "Buyer cancelled his payment"
+msgstr "L’acheteur a annulé son paiement"
+
+#: class-wc-gateway-payline.php:427
 msgid ""
-"You can't be redirected to payment page (error code %s: %s). Please contact "
-"us."
+"Code of payment page customization created in Payline Administration Center"
 msgstr ""
-"Vous ne pouvez pas être redirigé vers la page de paiement (code d'erreur "
-"%s : %s). Veuillez nous contacter."
+"Code de la page personnalisée de paiement, créée dans le centre "
+"d'administration de  Payline"
 
-#: class-wc-gateway-payline.php:698
+#: class-wc-gateway-payline.php:432
+msgid "Contract number that determines the point of sale used in Payline"
+msgstr "Numéro de contrat qui détermine le point de vente utilisé dans Payline"
+
+#: class-wc-gateway-payline.php:442
+msgid "Contracts displayed for payment retry. Values must be separated by ;"
+msgstr ""
+"Les contrats affichés pour le paiement \"Réessayer\". Les valeurs doivent "
+"être séparées par ;"
+
+#: class-wc-gateway-payline.php:437
+msgid ""
+"Contracts displayed on web payment page - step 1. Values must be separated "
+"by ;"
+msgstr ""
+"Contrats affichés sur la page de paiement de Web - étape 1. Les valeurs "
+"doivent être séparées par ;"
+
+#: class-wc-gateway-payline.php:425
+msgid "Custom page code"
+msgstr "Page personnalisée"
+
+#: class-wc-gateway-payline.php:322
+msgid "Debug logging"
+msgstr "Journal des logs"
+
+#: class-wc-gateway-payline.php:391
+msgid "Default language"
+msgstr "Langue par défaut"
+
+#: class-wc-gateway-payline.php:316
+msgid "Description"
+msgstr "Description"
+
+#: class-wc-gateway-payline.php:397
+msgid "en"
+msgstr "en"
+
+#: class-wc-gateway-payline.php:324
+msgid "Enable"
+msgstr "Activer"
+
+#: class-wc-gateway-payline.php:306
 #, php-format
-msgid "Token %s does not match expected %s for order %s"
-msgstr "Le token %s ne correspond pas à  %s for order %s"
+msgid "Enable %s"
+msgstr "Activer %s"
 
-#: class-wc-gateway-payline.php:717
+#: class-wc-gateway-payline.php:396
+msgid "fr"
+msgstr "fr"
+
+#: class-wc-gateway-payline.php:832
 msgid "Fraud alert. See details in Payline administration center"
 msgstr ""
 "Code de la page personnalisée de paiement, créée dans le centre "
 "d'administration de Payline"
 
-#: class-wc-gateway-payline.php:721
-msgid "Buyer cancelled his payment"
-msgstr "L’acheteur a annulé son paiement"
+#: class-wc-gateway-payline.php:353
+msgid "Homologation"
+msgstr "Homologation (test)"
 
-#: class-wc-gateway-payline.php:725
-msgid "Payment session expired without transaction"
-msgstr "La session du paiement a expiré sans transaction"
+#: class-wc-gateway-payline.php:367
+msgid "Host"
+msgstr "Hôte"
 
-#: class-wc-gateway-payline.php:729
+#. Author URI of the plugin
+msgid "http://www.monext.fr"
+msgstr "http://www.monext.fr"
+
+#. URI of the plugin
+msgid "http://www.payline.com"
+msgstr "http://www.payline.com"
+
+#: class-wc-gateway-payline.php:418
+msgid "In-Shop Column mode"
+msgstr "Mode In-Shop colonne"
+
+#: class-wc-gateway-payline.php:419
+msgid "In-Shop Lightbox mode"
+msgstr "Mode In-Shop lightbox"
+
+#: class-wc-gateway-payline.php:417
+#| msgid "In-Shop mode"
+msgid "In-Shop Tab mode"
+msgstr "Mode In-Shop tabulations"
+
+#: class-wc-gateway-payline.php:422
+#, php-format
+msgid ""
+"Integration mode of the payment widget in the shop. Contact payline support "
+"for more details"
+msgstr ""
+"Mode d'intégration du widget de paiement dans la boutique. Contacter le "
+"support payline pour plus de détails"
+
+#. Description of the plugin
+msgid "integrations of Payline payment solution in your WooCommerce store"
+msgstr ""
+"intégrations de solution de paiement Payline dans votre magasin de "
+"WooCommerce"
+
+#: class-wc-gateway-payline.php:400
+msgid "Language used to display Payline web payment pages"
+msgstr "Langue utilisée pour afficher les pages de paiement Payline web"
+
+#: class-wc-gateway-payline.php:326
+#, php-format
+msgid ""
+"Log %s events, such as requests, inside <code>woocommerce/logs/%s.txt</code>"
+msgstr ""
+"Tracer les évènements relatifs à %s, dans le fichier : <code>"
+"woocommerce/logs/%s.txt</code>"
+
+#: class-wc-gateway-payline.php:375
+msgid "Login"
+msgstr "Utilisateur"
+
+#: class-wc-gateway-payline.php:430 class-wc-gateway-payline.php:525
+msgid "Main contract number"
+msgstr "Numéro du contrat"
+
+#: class-wc-gateway-payline.php:337 class-wc-gateway-payline.php:516
+msgid "Merchant ID"
+msgstr "Identifiant Payline"
+
+#. Author of the plugin
+msgid "Monext"
+msgstr "Monext"
+
+#: class-wc-gateway-payline.php:379
+msgid "Password"
+msgstr "Mot de passe"
+
+#: class-wc-gateway-payline.php:346
+#, php-format
+msgid ""
+"Password used to call %s web services (available in the %s administration "
+"center)"
+msgstr ""
+"Mot de passe utilisé pour appeler les services web %s (disponible dans le "
+"centre d'administration %s)"
+
+#: class-wc-gateway-payline.php:230
+msgid "Pay via Payline"
+msgstr "Payer avec Payline"
+
+#. Name of the plugin
+msgid "Payline"
+msgstr "Payline"
+
+#: class-wc-gateway-payline.php:356
+msgid "Payline destination environement of your requests"
+msgstr "Environnement de destination Payline de vos demandes"
+
+#: class-wc-gateway-payline.php:333 class-wc-gateway-payline.php:542
+msgid "PAYLINE GATEWAY ACCESS"
+msgstr "ACCES PASSERELLE PAYLINE"
+
+#: class-wc-gateway-payline.php:403
+msgid "Payment action"
+msgstr "Action de paiement"
+
+#: class-wc-gateway-payline.php:848
+msgid "Payment in progress"
+msgstr "Paiement en cours"
+
+#: class-wc-gateway-payline.php:854
+#, php-format
+msgid "Payment refused (code %s: %s)"
+msgstr "Paiement refusé (code %s : %s)"
+
+#: class-wc-gateway-payline.php:844
 msgid "Payment session expired with no redirection on payment page"
 msgstr ""
 "La session du paiement a expiré sans redirection vers la page de paiement"
 
-#: class-wc-gateway-payline.php:733
-msgid "Payment in progress"
-msgstr "Paiement en cours"
+#: class-wc-gateway-payline.php:840
+msgid "Payment session expired without transaction"
+msgstr "La session du paiement a expiré sans transaction"
 
-#: class-wc-gateway-payline.php:739
+#: class-wc-gateway-payline.php:387
+msgid "PAYMENT SETTINGS"
+msgstr "PARAMETRES DE PAIEMENT"
+
+#: class-wc-gateway-payline.php:371
+msgid "Port"
+msgstr "Port"
+
+#: class-wc-gateway-payline.php:435
+msgid "Primary contracts"
+msgstr "Contrats primaires"
+
+#: class-wc-gateway-payline.php:354
+msgid "Production"
+msgstr "Production"
+
+#: class-wc-gateway-payline.php:363 class-wc-gateway-payline.php:544
+msgid "PROXY SETTINGS"
+msgstr "PARAMETRES PROXY"
+
+#: class-wc-gateway-payline.php:398
+msgid "pt"
+msgstr "pt"
+
+#: class-wc-gateway-payline.php:420
+msgid "Redirection mode"
+msgstr "Mode Redirection"
+
+#: class-wc-gateway-payline.php:886
+msgid "Refund failed."
+msgstr "Remboursement en erreur"
+
+#: class-wc-gateway-payline.php:908
 #, php-format
-msgid "Payment refused (code %s: %s)"
-msgstr "Paiement refusé (code %s : %s)"
+msgid "Refunded %1$s - Refund ID: %2$s"
+msgstr "Remboursement de %1$s - Transaction ID: %2$s"
+
+#: class-wc-gateway-payline.php:570
+msgid "Reset configuration"
+msgstr "Réinitialiser la configuration"
+
+#: class-wc-gateway-payline.php:440
+msgid "Secondary contracts"
+msgstr "Contrats secondaires"
 
 #: woocommerce-payline.php:39
 #, php-format
@@ -346,28 +308,78 @@ msgstr ""
 "Désolé ! Pour utiliser WooCommerce %s de Paiement plugin, vous devez "
 "installer et activer le plugin WooCommerce."
 
-#: woocommerce-payline.php:66
-msgid "Settings"
-msgstr "Paramètres"
+#: class-wc-gateway-payline.php:304
+msgid "Status"
+msgstr "Statut"
 
-#. Plugin Name of the plugin/theme
-msgid "Payline"
-msgstr "Payline"
+#: class-wc-gateway-payline.php:349
+msgid "Target environment"
+msgstr "Environnement cible"
 
-#. Plugin URI of the plugin/theme
-msgid "http://www.payline.com"
-msgstr "http://www.payline.com"
+#: class-wc-gateway-payline.php:511
+msgid ""
+"The SOAP extension is not enabled in your PHP installation and is required"
+msgstr "L'extension php SOAP est requise mais n'est pas active "
 
-#. Description of the plugin/theme
-msgid "integrations of Payline payment solution in your WooCommerce store"
+#: class-wc-gateway-payline.php:318
+msgid "This controls the description which the user sees during checkout."
 msgstr ""
-"intégrations de solution de paiement Payline dans votre magasin de "
-"WooCommerce"
+"La description qui est affichée à l’utilisateur lorsque la méthode Payline "
+"est sélectionnée."
 
-#. Author of the plugin/theme
-msgid "Monext"
-msgstr "Monext"
+#: class-wc-gateway-payline.php:312
+msgid "This controls the title which the user sees during checkout."
+msgstr ""
+"Libellé sous lequel le paiement via Payline est proposé à l’acheteur dans le "
+"processus de commande."
 
-#. Author URI of the plugin/theme
-msgid "http://www.monext.fr"
-msgstr "http://www.monext.fr"
+#: class-wc-gateway-payline.php:310
+msgid "Title"
+msgstr "Titre"
+
+#: class-wc-gateway-payline.php:809
+#, php-format
+msgid "Token %s does not match expected %s for order %s"
+msgstr "Le token %s ne correspond pas à  %s for order %s"
+
+#: class-wc-gateway-payline.php:410
+msgid "Type of transaction created after a payment"
+msgstr "Type de transaction créée après un paiement"
+
+#: class-wc-gateway-payline.php:546
+#, php-format
+msgid "Unable to connect to Payline (code %s : %s)"
+msgstr "Impossible de se connecter à Payline (Code%s:%s)"
+
+#: class-wc-gateway-payline.php:542 class-wc-gateway-payline.php:544
+#, php-format
+msgid "Unable to connect to Payline, check your %s"
+msgstr "Impossible de se connecter à Payline, vérifiez votre%s"
+
+#: class-wc-gateway-payline.php:413
+msgid "Widget integration mode"
+msgstr "Mode d'intégration du Widget"
+
+#: class-wc-gateway-payline.php:537
+msgid "You are in homologation mode, payments are simulated !"
+msgstr "Vous êtes en mode de test, les paiements sont simulés!"
+
+#: class-wc-gateway-payline.php:319
+#, php-format
+msgid "You will be redirected on %s secured pages at the end of your order."
+msgstr ""
+"Vous allez être redirigé sur les pages sécurisées de %s à la fin de votre "
+"commande."
+
+#: class-wc-gateway-payline.php:505
+#, php-format
+msgid "Your %s configuration parameters are reset."
+msgstr "Les paramètres de configuration de votre %s sont réinitialisés."
+
+#: class-wc-gateway-payline.php:340
+msgid "Your Payline account identifier"
+msgstr "Votre identifiant de compte Payline"
+
+#: class-wc-gateway-payline.php:535
+msgid "Your settings is correct, connexion with Payline is established"
+msgstr "Vos paramètres sont corrects, connexion avec Payline établie"

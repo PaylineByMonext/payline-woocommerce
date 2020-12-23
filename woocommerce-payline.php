@@ -69,22 +69,3 @@ function woocommerce_payline_add_link($links, $file) {
 	return $links;
 }
 add_filter('plugin_action_links_'.plugin_basename(__FILE__), 'woocommerce_payline_add_link',  10, 2);
-
-
-if ( ! function_exists( 'woocommerce_payline_restore_cart_for_order' ) ) {
-    /**
-     * Display an 'order again' button on the view order page.
-     *
-     * @param object $order Order.
-     */
-    function woocommerce_payline_restore_cart_for_order( $order ) {
-//        if ( ! $order || ! $order->has_status( apply_filters( 'woocommerce_valid_order_statuses_for_order_again', array( 'completed' ) ) ) || ! is_user_logged_in() ) {
-//            return;
-//        }
-
-        wc_get_template( 'widget/ocancel-payment.php', array(
-            'order'           => $order,
-            'order_again_url' => wp_nonce_url( add_query_arg( 'order_again', $order->get_id(), wc_get_cart_url() ), 'woocommerce-order_again' ),
-        ) );
-    }
-}

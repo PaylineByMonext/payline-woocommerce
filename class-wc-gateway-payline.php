@@ -10,261 +10,444 @@ use Payline\PaylineSDK;
  * @category	Payment Gateways
  */
 
-class WC_Gateway_Payline extends WC_Payment_Gateway {
-	private $extensionVersion = '1.4';
-	private $SDK;
-	private $posData;
-	private $disp_errors = "";
-	private $admin_link = "";
-	private $debug = false;
-	private $callGetMerchantSettings = true;
 
-	const BAD_CONNECT_SETTINGS_ERR = "Unauthorized";
-	const BAD_PROXY_SETTINGS_ERR = "Could not connect to host";
+if ( ! class_exists( 'WC_Abstract_Payline', false ) ) {
+    include_once 'class-wc-abstract-payline.php';
+}
 
-	var $_currencies = array(
-		'EUR' => '978', // Euro
-		'AFN' => '971', // Afghani
-		'ALL' => '8', // Lek
-		'DZD' => '12', // Algerian Dinar
-		'USD' => '840', // US Dollar
-		'AOA' => '973', // Kwanza
-		'XCD' => '951', // East Caribbean Dollar
-		'ARS' => '32', // Argentine Peso
-		'AMD' => '51', // Armenian Dram
-		'AWG' => '533', // Aruban Guilder
-		'AUD' => '36', // Australian Dollar
-		'AZN' => '944', // Azerbaijanian Manat
-		'BSD' => '44', // Bahamian Dollar
-		'BHD' => '48', // Bahraini Dinar
-		'BDT' => '50', // Taka
-		'BBD' => '52', // Barbados Dollar
-		'BYR' => '974', // Belarussian Ruble
-		'BZD' => '84', // Belize Dollar
-		'XOF' => '952', // CFA Franc BCEAO �
-		'BMD' => '60', // Bermudian Dollar (customarily known as Bermuda Dollar)
-		'INR' => '356', // Indian Rupee
-		'BTN' => '64', // Ngultrum
-		'BOB' => '68', // Boliviano
-		'BOV' => '984', // Mvdol
-		'BAM' => '977', // Convertible Marks
-		'BWP' => '72', // Pula
-		'NOK' => '578', // Norwegian Krone
-		'BRL' => '986', // Brazilian Real
-		'BND' => '96', // Brunei Dollar
-		'BGN' => '975', // Bulgarian Lev
-		'BIF' => '108', // Burundi Franc
-		'KHR' => '116', // Riel
-		'XAF' => '950', // CFA Franc BEAC �
-		'CAD' => '124', // Canadian Dollar
-		'CVE' => '132', // Cape Verde Escudo
-		'KYD' => '136', // Cayman Islands Dollar
-		'CLP' => '152', // Chilean Peso
-		'CLF' => '990', // Unidades de formento
-		'CNY' => '156', // Yuan Renminbi
-		'COP' => '170', // Colombian Peso
-		'COU' => '970', // Unidad de Valor Real
-		'KMF' => '174', // Comoro Franc
-		'CDF' => '976', // Franc Congolais
-		'NZD' => '554', // New Zealand Dollar
-		'CRC' => '188', // Costa Rican Colon
-		'HRK' => '191', // Croatian Kuna
-		'CUP' => '192', // Cuban Peso
-		'CYP' => '196', // Cyprus Pound
-		'CZK' => '203', // Czech Koruna
-		'DKK' => '208', // Danish Krone
-		'DJF' => '262', // Djibouti Franc
-		'DOP' => '214', // Dominican Peso
-		'EGP' => '818', // Egyptian Pound
-		'SVC' => '222', // El Salvador Colon
-		'ERN' => '232', // Nakfa
-		'EEK' => '233', // Kroon
-		'ETB' => '230', // Ethiopian Birr
-		'FKP' => '238', // Falkland Islands Pound
-		'FJD' => '242', // Fiji Dollar
-		'XPF' => '953', // CFP Franc
-		'GMD' => '270', // Dalasi
-		'GEL' => '981', // Lari
-		'GHC' => '288', // Cedi
-		'GIP' => '292', // Gibraltar Pound
-		'GTQ' => '320', // Quetzal
-		'GNF' => '324', // Guinea Franc
-		'GWP' => '624', // Guinea-Bissau Peso
-		'GYD' => '328', // Guyana Dollar
-		'HTG' => '332', // Gourde
-		'HNL' => '340', // Lempira
-		'HKD' => '344', // Hong Kong Dollar
-		'HUF' => '348', // Forint
-		'ISK' => '352', // Iceland Krona
-		'IDR' => '360', // Rupiah
-		'XDR' => '960', // SDR
-		'IRR' => '364', // Iranian Rial
-		'IQD' => '368', // Iraqi Dinar
-		'ILS' => '376', // New Israeli Sheqel
-		'JMD' => '388', // Jamaican Dollar
-		'JPY' => '392', // Yen
-		'JOD' => '400', // Jordanian Dinar
-		'KZT' => '398', // Tenge
-		'KES' => '404', // Kenyan Shilling
-		'KPW' => '408', // North Korean Won
-		'KRW' => '410', // Won
-		'KWD' => '414', // Kuwaiti Dinar
-		'KGS' => '417', // Som
-		'LAK' => '418', // Kip
-		'LVL' => '428', // Latvian Lats
-		'LBP' => '422', // Lebanese Pound
-		'ZAR' => '710', // Rand
-		'LSL' => '426', // Loti
-		'LRD' => '430', // Liberian Dollar
-		'LYD' => '434', // Libyan Dinar
-		'CHF' => '756', // Swiss Franc
-		'LTL' => '440', // Lithuanian Litas
-		'MOP' => '446', // Pataca
-		'MKD' => '807', // Denar
-		'MGA' => '969', // Malagascy Ariary
-		'MWK' => '454', // Kwacha
-		'MYR' => '458', // Malaysian Ringgit
-		'MVR' => '462', // Rufiyaa
-		'MTL' => '470', // Maltese Lira
-		'MRO' => '478', // Ouguiya
-		'MUR' => '480', // Mauritius Rupee
-		'MXN' => '484', // Mexican Peso
-		'MXV' => '979', // Mexican Unidad de Inversion (UID)
-		'MDL' => '498', // Moldovan Leu
-		'MNT' => '496', // Tugrik
-		'MAD' => '504', // Moroccan Dirham
-		'MZN' => '943', // Metical
-		'MMK' => '104', // Kyat
-		'NAD' => '516', // Namibian Dollar
-		'NPR' => '524', // Nepalese Rupee
-		'ANG' => '532', // Netherlands Antillian Guilder
-		'NIO' => '558', // Cordoba Oro
-		'NGN' => '566', // Naira
-		'OMR' => '512', // Rial Omani
-		'PKR' => '586', // Pakistan Rupee
-		'PAB' => '590', // Balboa
-		'PGK' => '598', // Kina
-		'PYG' => '600', // Guarani
-		'PEN' => '604', // Nuevo Sol
-		'PHP' => '608', // Philippine Peso
-		'PLN' => '985', // Zloty
-		'QAR' => '634', // Qatari Rial
-		'ROL' => '642', // Old Leu
-		'RON' => '946', // New Leu
-		'RUB' => '643', // Russian Ruble
-		'RWF' => '646', // Rwanda Franc
-		'SHP' => '654', // Saint Helena Pound
-		'WST' => '882', // Tala
-		'STD' => '678', // Dobra
-		'SAR' => '682', // Saudi Riyal
-		'RSD' => '941', // Serbian Dinar
-		'SCR' => '690', // Seychelles Rupee
-		'SLL' => '694', // Leone
-		'SGD' => '702', // Singapore Dollar
-		'SKK' => '703', // Slovak Koruna
-		'SIT' => '705', // Tolar
-		'SBD' => '90', // Solomon Islands Dollar
-		'SOS' => '706', // Somali Shilling
-		'LKR' => '144', // Sri Lanka Rupee
-		'SDG' => '938', // Sudanese Dinar
-		'SRD' => '968', // Surinam Dollar
-		'SZL' => '748', // Lilangeni
-		'SEK' => '752', // Swedish Krona
-		'CHW' => '948', // WIR Franc
-		'CHE' => '947', // WIR Euro
-		'SYP' => '760', // Syrian Pound
-		'TWD' => '901', // New Taiwan Dollar
-		'TJS' => '972', // Somoni
-		'TZS' => '834', // Tanzanian Shilling
-		'THB' => '764', // Baht
-		'TOP' => '776', // Pa'anga
-		'TTD' => '780', // Trinidad and Tobago Dollar
-		'TND' => '788', // Tunisian Dinar
-		'TRY' => '949', // New Turkish Lira
-		'TMM' => '795', // Manat
-		'UGX' => '800', // Uganda Shilling
-		'UAH' => '980', // Hryvnia
-		'AED' => '784', // UAE Dirham
-		'GBP' => '826', // Pound Sterling
-		'USS' => '998', // (Same day)
-		'USN' => '997', // (Next day)
-		'UYU' => '858', // Peso Uruguayo
-		'UYI' => '940', // Uruguay Peso en Unidades Indexadas
-		'UZS' => '860', // Uzbekistan Sum
-		'VUV' => '548', // Vatu
-		'VEB' => '862', // Bolivar
-		'VND' => '704', // Dong
-		'YER' => '886', // Yemeni Rial
-		'ZMK' => '894', // Kwacha
-		'ZWD' => '716', // Zimbabwe Dollar
-		'XAU' => '959', // Gold
-		'XBA' => '955', // Bond Markets Units European Composite Unit (EURCO)
-		'XBB' => '956', // European Monetary Unit (E.M.U.-6)
-		'XBC' => '957', // European Unit of Account 9(E.U.A.-9)
-		'XBD' => '958', // European Unit of Account 17(E.U.A.-17)
-		'XPD' => '964', // Palladium
-		'XPT' => '962', // Platinum
-		'XAG' => '961', // Silver
-		'XTS' => '963', // Codes specifically reserved for testing purposes
-		'XXX' => '999', // The codes assigned for transactions where no currency is involved
-	);
 
-	public function __construct() {
+class WC_Gateway_Payline extends WC_Abstract_Payline {
 
-		$this->id = 'payline';
-		$this->icon = apply_filters('woocommerce_payline_icon', WCPAYLINE_PLUGIN_URL . 'assets/images/payline_front.png');
-		$this->has_fields = false;
-		$this->method_title = 'Payline';
-		$this->order_button_text  = __( 'Pay via Payline', 'payline' );
+    protected $extensionVersion = '1.4';
 
-		// Load the form fields.
-		$this->init_form_fields();
+    /** @var Payline\PaylineSDK $SDK */
+    protected $SDK;
+    protected $posData;
+    protected $disp_errors = "";
+    protected $admin_link = "";
+    protected $debug = false;
+    protected $callGetMerchantSettings = true;
 
-		// Load the settings.
-		$this->init_settings();
+    const BAD_CONNECT_SETTINGS_ERR = "Unauthorized";
+    const BAD_PROXY_SETTINGS_ERR = "Could not connect to host";
 
-		// Define user set variables
-		$this->title = $this->settings['title'];
-		$this->description = $this->settings['description'];
-		$this->testmode = (isset($this->settings['ctx_mode']) && $this->settings['ctx_mode'] === 'TEST');
-		$this->debug = (isset($this->settings['debug']) && $this->settings['debug'] == 'yes') ? true : false;
+    var $_currencies = array(
+        'EUR' => '978', // Euro
+        'AFN' => '971', // Afghani
+        'ALL' => '8', // Lek
+        'DZD' => '12', // Algerian Dinar
+        'USD' => '840', // US Dollar
+        'AOA' => '973', // Kwanza
+        'XCD' => '951', // East Caribbean Dollar
+        'ARS' => '32', // Argentine Peso
+        'AMD' => '51', // Armenian Dram
+        'AWG' => '533', // Aruban Guilder
+        'AUD' => '36', // Australian Dollar
+        'AZN' => '944', // Azerbaijanian Manat
+        'BSD' => '44', // Bahamian Dollar
+        'BHD' => '48', // Bahraini Dinar
+        'BDT' => '50', // Taka
+        'BBD' => '52', // Barbados Dollar
+        'BYR' => '974', // Belarussian Ruble
+        'BZD' => '84', // Belize Dollar
+        'XOF' => '952', // CFA Franc BCEAO �
+        'BMD' => '60', // Bermudian Dollar (customarily known as Bermuda Dollar)
+        'INR' => '356', // Indian Rupee
+        'BTN' => '64', // Ngultrum
+        'BOB' => '68', // Boliviano
+        'BOV' => '984', // Mvdol
+        'BAM' => '977', // Convertible Marks
+        'BWP' => '72', // Pula
+        'NOK' => '578', // Norwegian Krone
+        'BRL' => '986', // Brazilian Real
+        'BND' => '96', // Brunei Dollar
+        'BGN' => '975', // Bulgarian Lev
+        'BIF' => '108', // Burundi Franc
+        'KHR' => '116', // Riel
+        'XAF' => '950', // CFA Franc BEAC �
+        'CAD' => '124', // Canadian Dollar
+        'CVE' => '132', // Cape Verde Escudo
+        'KYD' => '136', // Cayman Islands Dollar
+        'CLP' => '152', // Chilean Peso
+        'CLF' => '990', // Unidades de formento
+        'CNY' => '156', // Yuan Renminbi
+        'COP' => '170', // Colombian Peso
+        'COU' => '970', // Unidad de Valor Real
+        'KMF' => '174', // Comoro Franc
+        'CDF' => '976', // Franc Congolais
+        'NZD' => '554', // New Zealand Dollar
+        'CRC' => '188', // Costa Rican Colon
+        'HRK' => '191', // Croatian Kuna
+        'CUP' => '192', // Cuban Peso
+        'CYP' => '196', // Cyprus Pound
+        'CZK' => '203', // Czech Koruna
+        'DKK' => '208', // Danish Krone
+        'DJF' => '262', // Djibouti Franc
+        'DOP' => '214', // Dominican Peso
+        'EGP' => '818', // Egyptian Pound
+        'SVC' => '222', // El Salvador Colon
+        'ERN' => '232', // Nakfa
+        'EEK' => '233', // Kroon
+        'ETB' => '230', // Ethiopian Birr
+        'FKP' => '238', // Falkland Islands Pound
+        'FJD' => '242', // Fiji Dollar
+        'XPF' => '953', // CFP Franc
+        'GMD' => '270', // Dalasi
+        'GEL' => '981', // Lari
+        'GHC' => '288', // Cedi
+        'GIP' => '292', // Gibraltar Pound
+        'GTQ' => '320', // Quetzal
+        'GNF' => '324', // Guinea Franc
+        'GWP' => '624', // Guinea-Bissau Peso
+        'GYD' => '328', // Guyana Dollar
+        'HTG' => '332', // Gourde
+        'HNL' => '340', // Lempira
+        'HKD' => '344', // Hong Kong Dollar
+        'HUF' => '348', // Forint
+        'ISK' => '352', // Iceland Krona
+        'IDR' => '360', // Rupiah
+        'XDR' => '960', // SDR
+        'IRR' => '364', // Iranian Rial
+        'IQD' => '368', // Iraqi Dinar
+        'ILS' => '376', // New Israeli Sheqel
+        'JMD' => '388', // Jamaican Dollar
+        'JPY' => '392', // Yen
+        'JOD' => '400', // Jordanian Dinar
+        'KZT' => '398', // Tenge
+        'KES' => '404', // Kenyan Shilling
+        'KPW' => '408', // North Korean Won
+        'KRW' => '410', // Won
+        'KWD' => '414', // Kuwaiti Dinar
+        'KGS' => '417', // Som
+        'LAK' => '418', // Kip
+        'LVL' => '428', // Latvian Lats
+        'LBP' => '422', // Lebanese Pound
+        'ZAR' => '710', // Rand
+        'LSL' => '426', // Loti
+        'LRD' => '430', // Liberian Dollar
+        'LYD' => '434', // Libyan Dinar
+        'CHF' => '756', // Swiss Franc
+        'LTL' => '440', // Lithuanian Litas
+        'MOP' => '446', // Pataca
+        'MKD' => '807', // Denar
+        'MGA' => '969', // Malagascy Ariary
+        'MWK' => '454', // Kwacha
+        'MYR' => '458', // Malaysian Ringgit
+        'MVR' => '462', // Rufiyaa
+        'MTL' => '470', // Maltese Lira
+        'MRO' => '478', // Ouguiya
+        'MUR' => '480', // Mauritius Rupee
+        'MXN' => '484', // Mexican Peso
+        'MXV' => '979', // Mexican Unidad de Inversion (UID)
+        'MDL' => '498', // Moldovan Leu
+        'MNT' => '496', // Tugrik
+        'MAD' => '504', // Moroccan Dirham
+        'MZN' => '943', // Metical
+        'MMK' => '104', // Kyat
+        'NAD' => '516', // Namibian Dollar
+        'NPR' => '524', // Nepalese Rupee
+        'ANG' => '532', // Netherlands Antillian Guilder
+        'NIO' => '558', // Cordoba Oro
+        'NGN' => '566', // Naira
+        'OMR' => '512', // Rial Omani
+        'PKR' => '586', // Pakistan Rupee
+        'PAB' => '590', // Balboa
+        'PGK' => '598', // Kina
+        'PYG' => '600', // Guarani
+        'PEN' => '604', // Nuevo Sol
+        'PHP' => '608', // Philippine Peso
+        'PLN' => '985', // Zloty
+        'QAR' => '634', // Qatari Rial
+        'ROL' => '642', // Old Leu
+        'RON' => '946', // New Leu
+        'RUB' => '643', // Russian Ruble
+        'RWF' => '646', // Rwanda Franc
+        'SHP' => '654', // Saint Helena Pound
+        'WST' => '882', // Tala
+        'STD' => '678', // Dobra
+        'SAR' => '682', // Saudi Riyal
+        'RSD' => '941', // Serbian Dinar
+        'SCR' => '690', // Seychelles Rupee
+        'SLL' => '694', // Leone
+        'SGD' => '702', // Singapore Dollar
+        'SKK' => '703', // Slovak Koruna
+        'SIT' => '705', // Tolar
+        'SBD' => '90', // Solomon Islands Dollar
+        'SOS' => '706', // Somali Shilling
+        'LKR' => '144', // Sri Lanka Rupee
+        'SDG' => '938', // Sudanese Dinar
+        'SRD' => '968', // Surinam Dollar
+        'SZL' => '748', // Lilangeni
+        'SEK' => '752', // Swedish Krona
+        'CHW' => '948', // WIR Franc
+        'CHE' => '947', // WIR Euro
+        'SYP' => '760', // Syrian Pound
+        'TWD' => '901', // New Taiwan Dollar
+        'TJS' => '972', // Somoni
+        'TZS' => '834', // Tanzanian Shilling
+        'THB' => '764', // Baht
+        'TOP' => '776', // Pa'anga
+        'TTD' => '780', // Trinidad and Tobago Dollar
+        'TND' => '788', // Tunisian Dinar
+        'TRY' => '949', // New Turkish Lira
+        'TMM' => '795', // Manat
+        'UGX' => '800', // Uganda Shilling
+        'UAH' => '980', // Hryvnia
+        'AED' => '784', // UAE Dirham
+        'GBP' => '826', // Pound Sterling
+        'USS' => '998', // (Same day)
+        'USN' => '997', // (Next day)
+        'UYU' => '858', // Peso Uruguayo
+        'UYI' => '940', // Uruguay Peso en Unidades Indexadas
+        'UZS' => '860', // Uzbekistan Sum
+        'VUV' => '548', // Vatu
+        'VEB' => '862', // Bolivar
+        'VND' => '704', // Dong
+        'YER' => '886', // Yemeni Rial
+        'ZMK' => '894', // Kwacha
+        'ZWD' => '716', // Zimbabwe Dollar
+        'XAU' => '959', // Gold
+        'XBA' => '955', // Bond Markets Units European Composite Unit (EURCO)
+        'XBB' => '956', // European Monetary Unit (E.M.U.-6)
+        'XBC' => '957', // European Unit of Account 9(E.U.A.-9)
+        'XBD' => '958', // European Unit of Account 17(E.U.A.-17)
+        'XPD' => '964', // Palladium
+        'XPT' => '962', // Platinum
+        'XAG' => '961', // Silver
+        'XTS' => '963', // Codes specifically reserved for testing purposes
+        'XXX' => '999', // The codes assigned for transactions where no currency is involved
+    );
 
-		// The module settings page URL
-		$link = add_query_arg('page', 'wc-settings', admin_url('admin.php'));
-		$link = add_query_arg('tab', 'checkout', $link);
-		$link = add_query_arg('section', 'payline', $link);
-		$this->admin_link = $link;
+    public function __construct() {
 
-		// logger
-		if ($this->debug) {
-			$this->log = new WC_Logger();
-		}
+        $this->id = 'payline';
+        $this->icon = apply_filters('woocommerce_payline_icon', WCPAYLINE_PLUGIN_URL . 'assets/images/payline_front.png');
+        $this->has_fields = false;
+        $this->supports           = array('products',
+            'refunds'
+        );
+        $this->method_title = 'Payline';
+        $this->order_button_text  = __( 'Pay via Payline', 'payline' );
 
-		// Actions
+        // Load the form fields.
+        $this->init_form_fields();
 
-		// Reset payline admin form action
-		add_action('payline_reset_admin_options', array($this, 'reset_admin_options'));
+        // Load the settings.
+        $this->init_settings();
 
-		// Generate form action
-		add_action('woocommerce_receipt_payline', array($this, 'generate_payline_form'));
+        // Define user set variables
+        $this->title = $this->settings['title'];
+        $this->description = $this->settings['description'];
+        $this->testmode = (isset($this->settings['ctx_mode']) && $this->settings['ctx_mode'] === 'TEST');
+        $this->debug = (isset($this->settings['debug']) && $this->settings['debug'] == 'yes') ? true : false;
 
-		// Update admin form action
-		add_action('woocommerce_update_options_payment_gateways_' . $this->id, array($this, 'process_admin_options'));
+        // The module settings page URL
+        $link = add_query_arg('page', 'wc-settings', admin_url('admin.php'));
+        $link = add_query_arg('tab', 'checkout', $link);
+        $link = add_query_arg('section', 'payline', $link);
+        $this->admin_link = $link;
 
-		// Return from payment platform action
-		add_action('woocommerce_api_wc_gateway_payline', array($this, 'payline_callback'));
-	}
+        // logger
+        if ($this->debug) {
+            $this->log = new WC_Logger();
+        }
 
-	function get_icon() {
-		$icon = $this->icon ? '<img style="width: 85px;" src="' . WC_HTTPS::force_https_url( $this->icon ) . '" alt="' . $this->title . '" />' : '';
-		return apply_filters( 'woocommerce_gateway_icon', $icon, $this->id );
-	}
+        // Actions
+        $this->add_payline_common_actions();
+
+    }
+
+    protected function add_payline_common_actions()
+    {
+        // Reset payline admin form action
+        add_action('payline_reset_admin_options', array($this, 'reset_admin_options'));
+
+        // Generate form action
+        add_action('woocommerce_receipt_payline', array($this, 'generate_payline_form'));
+
+        // Update admin form action
+        add_action('woocommerce_update_options_payment_gateways_' . $this->id, array($this, 'process_admin_options'));
+
+        // Return from payment platform action
+        add_action('woocommerce_api_wc_gateway_payline', array($this, 'payline_callback'));
+    }
+
+
+    function get_icon() {
+        $icon = $this->icon ? '<img style="width: 85px;" src="' . WC_HTTPS::force_https_url( $this->icon ) . '" alt="' . $this->title . '" />' : '';
+        return apply_filters( 'woocommerce_gateway_icon', $icon, $this->id );
+    }
+
+
+
+
+
+
+    function get_supported_card_types() {
+        $cards = array('' => __('All', 'payline'));
+
+        return $cards;
+    }
+
+    function init_form_fields() {
+
+        $this->form_fields = array();
+
+        /*
+         * Base settings
+         */
+        $this->form_fields['base_settings'] = array(
+            'title' => __( 'BASE SETTINGS', 'payline' ),
+            'type' => 'title'
+        );
+        $this->form_fields['enabled'] = array(
+            'title' => __('Status', 'payline'),
+            'type' => 'checkbox',
+            'label' => sprintf(__('Enable %s', 'payline'), 'Payline'),
+            'default' => 'yes'
+        );
+        $this->form_fields['title'] = array(
+            'title' => __('Title', 'payline'),
+            'type' => 'text',
+            'description' => __('This controls the title which the user sees during checkout.', 'payline'),
+            'default' => 'Payline'
+        );
+        $this->form_fields['description'] = array(
+            'title' => __( 'Description', 'payline' ),
+            'type' => 'textarea',
+            'description' => __( 'This controls the description which the user sees during checkout.', 'payline' ),
+            'default' => sprintf(__('You will be redirected on %s secured pages at the end of your order.', 'payline'), 'Payline')
+        );
+        $this->form_fields['debug'] = array(
+            'title' => __( 'Debug logging', 'payline' ),
+            'type' => 'checkbox',
+            'label' => __( 'Enable', 'payline' ),
+            'default' => 'no',
+            'description' => sprintf(__('Log %s events, such as requests, inside <code>woocommerce/logs/%s.txt</code>', 'payline'), 'Payline', 'payline'),
+        );
+
+        /*
+         * Connexion
+         */
+        $this->form_fields['payline_gateway_access'] = array(
+            'title' => __( 'PAYLINE GATEWAY ACCESS', 'payline' ),
+            'type' => 'title'
+        );
+        $this->form_fields['merchant_id'] = array(
+            'title' => __('Merchant ID', 'payline'),
+            'type' => 'text',
+            'default' => '',
+            'description' => __('Your Payline account identifier', 'payline')
+        );
+        $this->form_fields['access_key'] = array(
+            'title' => __('Access key', 'payline'),
+            'type' => 'text',
+            'default' => '',
+            'description' => sprintf(__( 'Password used to call %s web services (available in the %s administration center)', 'payline'), 'Payline', 'Payline')
+        );
+        $this->form_fields['environment'] = array(
+            'title' => __('Target environment', 'payline'),
+            'type' => 'select',
+            'default' => 'Homologation',
+            'options' => array(
+                PaylineSDK::ENV_HOMO => __('Homologation', 'payline'),
+                PaylineSDK::ENV_PROD => __('Production', 'payline')
+            ),
+            'description' => __('Payline destination environement of your requests', 'payline')
+        );
+
+        /*
+         * Proxy Settings
+         */
+        $this->form_fields['proxy_settings'] = array(
+            'title' => __( 'PROXY SETTINGS', 'payline' ),
+            'type' => 'title'
+        );
+        $this->form_fields['proxy_host'] = array(
+            'title' => __('Host', 'payline'),
+            'type' => 'text',
+        );
+        $this->form_fields['proxy_port'] = array(
+            'title' => __('Port', 'payline'),
+            'type' => 'text',
+        );
+        $this->form_fields['proxy_login'] = array(
+            'title' => __('Login', 'payline'),
+            'type' => 'text',
+        );
+        $this->form_fields['proxy_password'] = array(
+            'title' => __('Password', 'payline'),
+            'type' => 'text',
+        );
+
+        /*
+         * Payment Settings
+         */
+        $this->form_fields['payment_settings'] = array(
+            'title' => __( 'PAYMENT SETTINGS', 'payline' ),
+            'type' => 'title'
+        );
+        $this->form_fields['language'] = array(
+            'title' => __('Default language', 'payline'),
+            'type' => 'select',
+            'default' => '',
+            'options' => array(
+                '' => __('Based on browser', 'payline'),
+                'fr' => __('fr', 'payline'),
+                'en' => __('en', 'payline'),
+                'pt' => __('pt', 'payline')
+            ),
+            'description' => __('Language used to display Payline web payment pages', 'payline')
+        );
+        $this->form_fields['payment_action'] = array(
+            'title' => __('Payment action', 'payline'),
+            'type' => 'select',
+            'default' => '',
+            'options' => array(
+                '100' => __('Authorization', 'payline'),
+                '101' => __('Authorization + Capture', 'payline')
+            ),
+            'description' => __('Type of transaction created after a payment', 'payline')
+        );
+        $this->form_fields['widget_integration'] = array(
+            'title' => __( 'Widget integration mode', 'payline' ),
+            'type' => 'select',
+            'default' => 'redirection',
+            'options' => array(
+                'inshop-tab' => __( 'In-Shop Tab mode', 'payline' ),
+                'inshop-column' => __( 'In-Shop Column mode', 'payline' ),
+                'inshop-lightbox' => __( 'In-Shop Lightbox mode', 'payline' ),
+                'redirection' => __( 'Redirection mode', 'payline' )
+            ),
+            'description' => __( 'Integration mode of the payment widget in the shop. Contact payline support for more details', 'payline' )
+        );
+        $this->form_fields['custom_page_code'] = array(
+            'title' => __('Custom page code', 'payline'),
+            'type' => 'text',
+            'description' => __('Code of payment page customization created in Payline Administration Center', 'payline')
+        );
+        $this->form_fields['main_contract'] = array(
+            'title' => __('Main contract number', 'payline'),
+            'type' => 'text',
+            'description' => __('Contract number that determines the point of sale used in Payline', 'payline')
+        );
+        $this->form_fields['primary_contracts'] = array(
+            'title' => __('Primary contracts', 'payline'),
+            'type' => 'text',
+            'description' => __('Contracts displayed on web payment page - step 1. Values must be separated by ;', 'payline')
+        );
+        $this->form_fields['secondary_contracts'] = array(
+            'title' => __('Secondary contracts', 'payline'),
+            'type' => 'text',
+            'description' => __('Contracts displayed for payment retry. Values must be separated by ;', 'payline')
+        );
+    }
 
 
     /**
      * @return PaylineSDK
      */
-	public function getSDK()
+    public function getSDK()
     {
         $SDK = new PaylineSDK(
             $this->settings['merchant_id'],
@@ -279,6 +462,8 @@ class WC_Gateway_Payline extends WC_Payment_Gateway {
 
         return $SDK;
     }
+
+
 
 	public function admin_options() {
 		global $woocommerce;
@@ -409,163 +594,7 @@ class WC_Gateway_Payline extends WC_Payment_Gateway {
 		return $langs;
 	}
 
-	function get_supported_card_types() {
-		$cards = array('' => __('All', 'payline'));
 
-		return $cards;
-	}
-
-	function init_form_fields() {
-
-		$this->form_fields = array();
-
-		/*
-		 * Base settings
-		 */
-		$this->form_fields['base_settings'] = array(
-			'title' => __( 'BASE SETTINGS', 'payline' ),
-			'type' => 'title'
-		);
-		$this->form_fields['enabled'] = array(
-			'title' => __('Status', 'payline'),
-			'type' => 'checkbox',
-			'label' => sprintf(__('Enable %s', 'payline'), 'Payline'),
-			'default' => 'yes'
-		);
-		$this->form_fields['title'] = array(
-			'title' => __('Title', 'payline'),
-			'type' => 'text',
-			'description' => __('This controls the title which the user sees during checkout.', 'payline'),
-			'default' => 'Payline'
-		);
-		$this->form_fields['description'] = array(
-			'title' => __( 'Description', 'payline' ),
-			'type' => 'textarea',
-			'description' => __( 'This controls the description which the user sees during checkout.', 'payline' ),
-			'default' => sprintf(__('You will be redirected on %s secured pages at the end of your order.', 'payline'), 'Payline')
-		);
-		$this->form_fields['debug'] = array(
-			'title' => __( 'Debug logging', 'payline' ),
-			'type' => 'checkbox',
-			'label' => __( 'Enable', 'payline' ),
-			'default' => 'no',
-			'description' => sprintf(__('Log %s events, such as requests, inside <code>woocommerce/logs/%s.txt</code>', 'payline'), 'Payline', 'payline'),
-		);
-
-		/*
-		 * Connexion
-		 */
-		$this->form_fields['payline_gateway_access'] = array(
-			'title' => __( 'PAYLINE GATEWAY ACCESS', 'payline' ),
-			'type' => 'title'
-		);
-		$this->form_fields['merchant_id'] = array(
-			'title' => __('Merchant ID', 'payline'),
-			'type' => 'text',
-			'default' => '',
-			'description' => __('Your Payline account identifier', 'payline')
-		);
-		$this->form_fields['access_key'] = array(
-			'title' => __('Access key', 'payline'),
-			'type' => 'text',
-			'default' => '',
-			'description' => sprintf(__( 'Password used to call %s web services (available in the %s administration center)', 'payline'), 'Payline', 'Payline')
-		);
-		$this->form_fields['environment'] = array(
-			'title' => __('Target environment', 'payline'),
-			'type' => 'select',
-			'default' => 'Homologation',
-			'options' => array(
-				PaylineSDK::ENV_HOMO => __('Homologation', 'payline'),
-				PaylineSDK::ENV_PROD => __('Production', 'payline')
-			),
-			'description' => __('Payline destination environement of your requests', 'payline')
-		);
-
-		/*
-		 * Proxy Settings
-		 */
-		$this->form_fields['proxy_settings'] = array(
-			'title' => __( 'PROXY SETTINGS', 'payline' ),
-			'type' => 'title'
-		);
-		$this->form_fields['proxy_host'] = array(
-			'title' => __('Host', 'payline'),
-			'type' => 'text',
-		);
-		$this->form_fields['proxy_port'] = array(
-			'title' => __('Port', 'payline'),
-			'type' => 'text',
-		);
-		$this->form_fields['proxy_login'] = array(
-			'title' => __('Login', 'payline'),
-			'type' => 'text',
-		);
-		$this->form_fields['proxy_password'] = array(
-			'title' => __('Password', 'payline'),
-			'type' => 'text',
-		);
-
-		/*
-		 * Payment Settings
-		 */
-		$this->form_fields['payment_settings'] = array(
-			'title' => __( 'PAYMENT SETTINGS', 'payline' ),
-			'type' => 'title'
-		);
-		$this->form_fields['language'] = array(
-			'title' => __('Default language', 'payline'),
-			'type' => 'select',
-			'default' => '',
-			'options' => array(
-				'' => __('Based on browser', 'payline'),
-				'fr' => __('fr', 'payline'),
-				'en' => __('en', 'payline'),
-				'pt' => __('pt', 'payline')
-			),
-			'description' => __('Language used to display Payline web payment pages', 'payline')
-		);
-		$this->form_fields['payment_action'] = array(
-			'title' => __('Payment action', 'payline'),
-			'type' => 'select',
-			'default' => '',
-			'options' => array(
-				'100' => __('Authorization', 'payline'),
-				'101' => __('Authorization + Capture', 'payline')
-			),
-			'description' => __('Type of transaction created after a payment', 'payline')
-		);
-    	$this->form_fields['widget_integration'] = array(
-    		'title' => __( 'Widget integration mode', 'payline' ),
-    	    'type' => 'select',
-			'default' => 'redirection',
-			'options' => array(
-    			'in-shop' => __( 'In-Shop mode', 'payline' ),
-    			'redirection' => __( 'Redirection mode', 'payline' )
-    		),
-    	    'description' => __( 'Integration mode of the payment widget in the shop. Contact payline support for more details', 'payline' )
-    	);
-		$this->form_fields['custom_page_code'] = array(
-			'title' => __('Custom page code', 'payline'),
-			'type' => 'text',
-			'description' => __('Code of payment page customization created in Payline Administration Center', 'payline')
-		);
-		$this->form_fields['main_contract'] = array(
-			'title' => __('Main contract number', 'payline'),
-			'type' => 'text',
-			'description' => __('Contract number that determines the point of sale used in Payline', 'payline')
-		);
-		$this->form_fields['primary_contracts'] = array(
-			'title' => __('Primary contracts', 'payline'),
-			'type' => 'text',
-			'description' => __('Contracts displayed on web payment page - step 1. Values must be separated by ;', 'payline')
-		);
-		$this->form_fields['secondary_contracts'] = array(
-			'title' => __('Secondary contracts', 'payline'),
-			'type' => 'text',
-			'description' => __('Contracts displayed for payment retry. Values must be separated by ;', 'payline')
-		);
-	}
 
 	function validate_multiselect_field ($key, $value) {
 		$newValue = $_POST[$this->plugin_id . $this->id . '_' . $key];
@@ -594,7 +623,7 @@ class WC_Gateway_Payline extends WC_Payment_Gateway {
         $this->SDK = $this->getSDK();
 
 		$doWebPaymentRequest = array();
-		$doWebPaymentRequest['version'] = '14';
+		$doWebPaymentRequest['version'] = '20';
 		$doWebPaymentRequest['payment']['amount'] = round($order->get_total()*100);
 		$doWebPaymentRequest['payment']['currency'] = $this->_currencies[$order->get_currency()];
 		$doWebPaymentRequest['payment']['action'] = $this->settings['payment_action'];
@@ -684,7 +713,7 @@ class WC_Gateway_Payline extends WC_Payment_Gateway {
 
 		do_action( 'payline_before_do_web_payment', $requestParams, $this );
 
-		if ( $this->settings['widget_integration'] === 'in-shop' ) {
+		if ( preg_match('/inshop-(.*)/', $this->settings['widget_integration'],$match) ) {
             $widgetJS  =  $this->SDK::PROD_WDGT_JS;
             $widgetCSS  =  $this->SDK::PROD_WDGT_CSS;
 		    if ($this->settings['environment'] == $this->SDK::ENV_HOMO) {
@@ -695,7 +724,6 @@ class WC_Gateway_Payline extends WC_Payment_Gateway {
             printf('<link href="%s" rel="stylesheet" />', $widgetCSS);
 
 			$token = NULL;
-
 			// Prevent to send the request again on refresh.
 			if ( empty( $_GET['paylinetoken'] ) ) {
 				$result = $this->SDK->doWebPayment( $requestParams );
@@ -714,10 +742,20 @@ class WC_Gateway_Payline extends WC_Payment_Gateway {
 				$token = $_GET['paylinetoken'];
 			}
 
+
+
+
 			printf(
-				'<div id="PaylineWidget" data-token="%s" data-template="column" data-embeddedredirectionallowed="true"></div>',
-				$token
+				'<div id="PaylineWidget" data-token="%s" data-template="%s" data-embeddedredirectionallowed="true"></div>',
+				$token,
+                $match[1]
 			);
+
+			//TODO: Gestion du restore cart
+            if(false && is_user_logged_in()) {
+                $order_again_url = wp_nonce_url( add_query_arg( 'order_again', $order->get_id(), wc_get_cart_url() ), 'woocommerce-order_again' );
+                printf('<p class="order-again"><a href="%s"class="button"></a></p>', esc_url( $order_again_url ), esc_html_e( 'Back to cart', 'woocommerce' ));
+            }
 
 			exit;
 		} else {
@@ -779,8 +817,10 @@ class WC_Gateway_Payline extends WC_Payment_Gateway {
 				update_post_meta((int) $orderId, 'Transaction ID', $res['transaction']['id']);
 				update_post_meta((int) $orderId, 'Card number', $res['card']['number']);
 				update_post_meta((int) $orderId, 'Payment mean', $res['card']['type']);
-				update_post_meta((int) $orderId, 'Card expiry', $res['card']['expirationDate']);
-				$order->payment_complete($res['transaction']['id']);
+                update_post_meta((int) $orderId, 'Card expiry', $res['card']['expirationDate']);
+
+                update_post_meta((int) $orderId, '_contract_number', $res['payment']['contractNumber']);
+                $order->payment_complete($res['transaction']['id']);
                 $order->update_status('completed', 'Payment validated');
 				wp_redirect($this->get_return_url($order));
 				die();
@@ -826,6 +866,7 @@ class WC_Gateway_Payline extends WC_Payment_Gateway {
      * @return bool
      */
     public function can_refund_order( $order ) {
+        $contractNumber = get_post_meta($order->get_id(),'_contract_number' ,true);
         return $order && $order->get_transaction_id();
     }
 
@@ -847,27 +888,29 @@ class WC_Gateway_Payline extends WC_Payment_Gateway {
 
         $this->SDK = $this->getSDK();
 
-        /**
-        //$result = WC_Gateway_Paypal_API_Handler::refund_transaction( $order, $amount, $reason );
+        $paymentParams = array();
+        $paymentParams['amount'] = round($amount*100);
+        $paymentParams['currency'] = $this->_currencies[$order->get_currency()];
+        $paymentParams['action'] = 421;
+        $paymentParams['mode'] =  'CPT';
+        $paymentParams['contractNumber'] =  get_post_meta($order_id,'_contract_number' ,true);
 
-        if ( is_wp_error( $result ) ) {
-            $this->log( 'Refund Failed: ' . $result->get_error_message(), 'error' );
-            return new WP_Error( 'error', $result->get_error_message() );
+        $refundParams = array(
+            'transactionID' => $order->get_transaction_id(),
+            'comment' => $reason,
+            'payment'  => $paymentParams,
+            'sequenceNumber' => ''
+        );
+
+        $res = $this->SDK->doRefund($refundParams);
+        if($res['result']['code'] == '00000'){
+            $order->add_order_note(
+                sprintf( __( 'Refunded %1$s - Refund ID: %2$s', 'payline' ), $amount, $res['transaction']['id'] )
+            );
+            return true;
+        } else {
+            return new WP_Error( 'error',$res['result']['longMessage'] );
         }
-
-        $this->log( 'Refund Result: ' . wc_print_r( $result, true ) );
-
-        switch ( strtolower( $result->ACK ) ) { // phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
-            case 'success':
-            case 'successwithwarning':
-                $order->add_order_note(
-                    sprintf( __( 'Refunded %1$s - Refund ID: %2$s', 'woocommerce' ), $result->GROSSREFUNDAMT, $result->REFUNDTRANSACTIONID ) // phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
-                );
-                return true;
-        }
-
-        return isset( $result->L_LONGMESSAGE0 ) ? new WP_Error( 'error', $result->L_LONGMESSAGE0 ) : false; // phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
-         */
 
         return false;
     }
