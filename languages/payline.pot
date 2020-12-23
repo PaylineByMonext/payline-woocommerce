@@ -235,7 +235,7 @@ msgstr ""
 #: class-wc-gateway-payline.php:526
 #, php-format
 msgid ""
-"Integration mode of the payment widget in the shop. See %s for more details."
+"Mode d'intégration du widget de paiement dans la boutique. Contacter le support payline pour plus de détails"
 msgstr ""
 
 #: class-wc-gateway-payline.php:529

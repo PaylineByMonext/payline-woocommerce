@@ -245,10 +245,9 @@ msgstr "Mode Redirection"
 #: class-wc-gateway-payline.php:526
 #, php-format
 msgid ""
-"Integration mode of the payment widget in the shop. See %s for more details."
+"Integration mode of the payment widget in the shop. Contact payline support for more details"
 msgstr ""
-"Mode d'integration du widget de paiement dans la boutique. Consulter le lien "
-"suivant pour plus de détails %s."
+"Mode d'intégration du widget de paiement dans la boutique. Contacter le support payline pour plus de détails"
 
 #: class-wc-gateway-payline.php:529
 msgid "Custom page code"

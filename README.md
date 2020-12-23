@@ -24,7 +24,8 @@ Author
 ------
 
 * Fabien SUAREZ - <fabien.suarez@payline.com>
-* Nicolas MOLLET (https://www.thalasso-saintmalo.com)
+* Nicolas MOLLET (https://github.com/thermesmarins)
+* Timothe BORDIGA (https://github.com/roux1max)
 
 
 License

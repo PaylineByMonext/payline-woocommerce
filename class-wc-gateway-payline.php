@@ -260,6 +260,26 @@ class WC_Gateway_Payline extends WC_Payment_Gateway {
 		return apply_filters( 'woocommerce_gateway_icon', $icon, $this->id );
 	}
 
+
+    /**
+     * @return PaylineSDK
+     */
+	public function getSDK()
+    {
+        $SDK = new PaylineSDK(
+            $this->settings['merchant_id'],
+            $this->settings['access_key'],
+            $this->settings['proxy_host'],
+            $this->settings['proxy_port'],
+            $this->settings['proxy_login'],
+            $this->settings['proxy_password'],
+            $this->settings['environment']
+        );
+        $SDK->usedBy('wooComm '.$this->extensionVersion);
+
+        return $SDK;
+    }
+
 	public function admin_options() {
 		global $woocommerce;
 
@@ -301,6 +321,11 @@ class WC_Gateway_Payline extends WC_Payment_Gateway {
 		}
 		$this->disp_errors = "";
 
+        if (!extension_loaded('soap')) {
+            $this->callGetMerchantSettings = false;
+            $this->disp_errors .= "<p>".sprintf(__( 'The SOAP extension is not enabled in your PHP installation and is required', 'payline'))."</p>";
+        }
+
 		if($this->settings['merchant_id'] == null || strlen($this->settings['merchant_id']) == 0){
 			$this->callGetMerchantSettings = false;
 			$this->disp_errors .= "<p>".sprintf(__( '%s is mandatory', 'payline'), __('Merchant ID', 'payline' ))."</p>";
@@ -314,18 +339,11 @@ class WC_Gateway_Payline extends WC_Payment_Gateway {
 			$this->callGetMerchantSettings = false;
 			$this->disp_errors .= "<p>".sprintf(__( '%s is mandatory', 'payline'), __('Main contract number', 'payline' ))."</p>";
 		}
+
 		if($this->callGetMerchantSettings){
 
-			$this->SDK = new PaylineSDK(
-				$this->settings['merchant_id'],
-				$this->settings['access_key'],
-				$this->settings['proxy_host'],
-				$this->settings['proxy_port'],
-				$this->settings['proxy_login'],
-				$this->settings['proxy_password'],
-				$this->settings['environment']
-			);
-			$this->SDK->usedBy('wooComm '.$this->extensionVersion);
+			$this->SDK = $this->getSDK();
+
     		$res = $this->SDK->getEncryptionKey([]);
 			if($res['result']['code'] == '00000'){
 				echo "<div class='inline updated'>";
@@ -525,7 +543,7 @@ class WC_Gateway_Payline extends WC_Payment_Gateway {
     			'in-shop' => __( 'In-Shop mode', 'payline' ),
     			'redirection' => __( 'Redirection mode', 'payline' )
     		),
-    	    'description' => sprintf( __( 'Integration mode of the payment widget in the shop. See %s for more details.', 'payline' ), '<a href="https://payline.atlassian.net/wiki/spaces/DT/pages/24248408/Pages+Web">https://payline.atlassian.net/wiki/spaces/DT/pages/24248408/Pages+Web</a>' )
+    	    'description' => __( 'Integration mode of the payment widget in the shop. Contact payline support for more details', 'payline' )
     	);
 		$this->form_fields['custom_page_code'] = array(
 			'title' => __('Custom page code', 'payline'),
@@ -573,16 +591,7 @@ class WC_Gateway_Payline extends WC_Payment_Gateway {
 	function generate_payline_form($order_id) {
 		$order = wc_get_order($order_id);
 
-		$this->SDK = new PaylineSDK(
-			$this->settings['merchant_id'],
-			$this->settings['access_key'],
-			$this->settings['proxy_host'],
-			$this->settings['proxy_port'],
-			$this->settings['proxy_login'],
-			$this->settings['proxy_password'],
-			$this->settings['environment']
-		);
-		$this->SDK->usedBy('wooComm '.$this->extensionVersion);
+        $this->SDK = $this->getSDK();
 
 		$doWebPaymentRequest = array();
 		$doWebPaymentRequest['version'] = '14';
@@ -676,6 +685,15 @@ class WC_Gateway_Payline extends WC_Payment_Gateway {
 		do_action( 'payline_before_do_web_payment', $requestParams, $this );
 
 		if ( $this->settings['widget_integration'] === 'in-shop' ) {
+            $widgetJS  =  $this->SDK::PROD_WDGT_JS;
+            $widgetCSS  =  $this->SDK::PROD_WDGT_CSS;
+		    if ($this->settings['environment'] == $this->SDK::ENV_HOMO) {
+                $widgetJS  =  $this->SDK::HOMO_WDGT_JS;
+                $widgetCSS  =  $this->SDK::HOMO_WDGT_CSS;
+            }
+            printf( '<script src="%s"></script>', $widgetJS);
+            printf('<link href="%s" rel="stylesheet" />', $widgetCSS);
+
 			$token = NULL;
 
 			// Prevent to send the request again on refresh.
@@ -700,6 +718,8 @@ class WC_Gateway_Payline extends WC_Payment_Gateway {
 				'<div id="PaylineWidget" data-token="%s" data-template="column" data-embeddedredirectionallowed="true"></div>',
 				$token
 			);
+
+			exit;
 		} else {
             // EXECUTE
             // $result = $this->SDK->doWebPayment($doWebPaymentRequest);
@@ -737,16 +757,8 @@ class WC_Gateway_Payline extends WC_Payment_Gateway {
             exit;
         }
 
-        $this->SDK = new PaylineSDK(
-            $this->settings['merchant_id'],
-            $this->settings['access_key'],
-            $this->settings['proxy_host'],
-            $this->settings['proxy_port'],
-            $this->settings['proxy_login'],
-            $this->settings['proxy_password'],
-            $this->settings['environment']
-        );
-        $this->SDK->usedBy('wooComm '.$this->extensionVersion);
+        $this->SDK = $this->getSDK();
+
         $res = $this->SDK->getWebPaymentDetails(array('token'=>$token,'version'=>'2'));
         if($res['result']['code'] == PaylineSDK::ERR_CODE) {
             $this->SDK->getLogger()->addError('Unable to call Payline for token '.$token);
@@ -769,6 +781,7 @@ class WC_Gateway_Payline extends WC_Payment_Gateway {
 				update_post_meta((int) $orderId, 'Payment mean', $res['card']['type']);
 				update_post_meta((int) $orderId, 'Card expiry', $res['card']['expirationDate']);
 				$order->payment_complete($res['transaction']['id']);
+                $order->update_status('completed', 'Payment validated');
 				wp_redirect($this->get_return_url($order));
 				die();
 			}elseif ($res['result']['code'] == '04003'){
@@ -804,4 +817,58 @@ class WC_Gateway_Payline extends WC_Payment_Gateway {
 			}
 		}
 	}
+
+
+    /**
+     * Can the order be refunded via Payline?
+     *
+     * @param  WC_Order $order Order object.
+     * @return bool
+     */
+    public function can_refund_order( $order ) {
+        return $order && $order->get_transaction_id();
+    }
+
+
+    /**
+     * Process a refund if supported.
+     *
+     * @param  int    $order_id Order ID.
+     * @param  float  $amount Refund amount.
+     * @param  string $reason Refund reason.
+     * @return bool|WP_Error
+     */
+    public function process_refund( $order_id, $amount = null, $reason = '' ) {
+        $order = wc_get_order( $order_id );
+
+        if ( ! $this->can_refund_order( $order ) ) {
+            return new WP_Error( 'error', __( 'Refund failed.', 'payline' ) );
+        }
+
+        $this->SDK = $this->getSDK();
+
+        /**
+        //$result = WC_Gateway_Paypal_API_Handler::refund_transaction( $order, $amount, $reason );
+
+        if ( is_wp_error( $result ) ) {
+            $this->log( 'Refund Failed: ' . $result->get_error_message(), 'error' );
+            return new WP_Error( 'error', $result->get_error_message() );
+        }
+
+        $this->log( 'Refund Result: ' . wc_print_r( $result, true ) );
+
+        switch ( strtolower( $result->ACK ) ) { // phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
+            case 'success':
+            case 'successwithwarning':
+                $order->add_order_note(
+                    sprintf( __( 'Refunded %1$s - Refund ID: %2$s', 'woocommerce' ), $result->GROSSREFUNDAMT, $result->REFUNDTRANSACTIONID ) // phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
+                );
+                return true;
+        }
+
+        return isset( $result->L_LONGMESSAGE0 ) ? new WP_Error( 'error', $result->L_LONGMESSAGE0 ) : false; // phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
+         */
+
+        return false;
+    }
 }
