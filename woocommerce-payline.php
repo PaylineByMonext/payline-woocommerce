@@ -50,7 +50,16 @@ function woocommerce_payline_init() {
 	if (!class_exists('WC_Gateway_Payline')) {
 		require_once 'class-wc-gateway-payline.php';
 	}
-	
+
+    if (!class_exists('WC_Gateway_Payline_NX')) {
+        require_once 'class-wc-gateway-payline-nx.php';
+    }
+
+
+    if (!class_exists('WC_Gateway_Payline_REC')) {
+        require_once 'class-wc-gateway-payline-rec.php';
+    }
+
 	require_once 'vendor/autoload.php';
 }
 add_action('woocommerce_init', 'woocommerce_payline_init');
@@ -58,9 +67,14 @@ add_action('woocommerce_init', 'woocommerce_payline_init');
 
 // adds method to woocommerce methods
 function woocommerce_payline_add_method($methods) {
-	$methods[] = 'WC_Gateway_Payline';
-	return $methods;
+    $methods[] = 'WC_Gateway_Payline';
+    $methods[] = 'WC_Gateway_Payline_NX';
+    $methods[] = 'WC_Gateway_Payline_REC';
+
+    return $methods;
 }
+
+
 add_filter('woocommerce_payment_gateways', 'woocommerce_payline_add_method');
 
 // add a link from plugin list to parameters
