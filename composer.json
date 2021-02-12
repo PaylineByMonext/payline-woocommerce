@@ -1,0 +1,5 @@
+{
+  "require": {
+    "monext/payline-sdk": "^4.59"
+  }
+}
