@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Payline\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-12-08 00:01+0000\n"
+"POT-Creation-Date: 2021-01-11 09:11+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: \n"
@@ -16,29 +16,29 @@ msgstr ""
 "X-Loco-Version: 2.5.0; wp-5.5.1\n"
 "X-Domain: payline"
 
-#: class-wc-abstract-payline.php:511 class-wc-abstract-payline.php:515
-#: class-wc-abstract-payline.php:520
+#: class-wc-abstract-payline.php:506 class-wc-abstract-payline.php:510
+#: class-wc-abstract-payline.php:515
 #, php-format
 msgid "%s is mandatory"
 msgstr ""
 
-#: class-wc-abstract-payline.php:817
+#: class-wc-abstract-payline.php:830
 msgid "An error occured while displaying the payment form (error code %s : %s). Please contact us."
 msgstr ""
 
-#: class-wc-abstract-recurring-payline.php:59
+#: class-wc-abstract-recurring-payline.php:53
 msgid "A transaction every two years"
 msgstr ""
 
-#: class-wc-abstract-payline.php:515
+#: class-wc-abstract-payline.php:510
 msgid "Access Key"
 msgstr ""
 
-#: class-wc-abstract-payline.php:358
+#: class-wc-abstract-payline.php:361
 msgid "Access key"
 msgstr ""
 
-#: class-wc-abstract-payline.php:586
+#: class-wc-abstract-payline.php:581
 msgid "All"
 msgstr ""
 
@@ -49,91 +49,100 @@ msgid ""
 "Please contact us."
 msgstr ""
 
-#: class-wc-abstract-payline.php:422
+#: class-wc-abstract-payline.php:425
 msgid "Authorization"
 msgstr ""
 
-#: class-wc-abstract-payline.php:423 class-wc-abstract-recurring-payline.php:35
+#: class-wc-abstract-payline.php:426 class-wc-abstract-recurring-payline.php:29
 msgid "Authorization + Capture"
 msgstr ""
 
-#: class-wc-abstract-payline.php:316
+#: class-wc-abstract-payline.php:319
 msgid "BASE SETTINGS"
 msgstr ""
 
-#: class-wc-abstract-payline.php:410
+#: class-wc-abstract-payline.php:413
 msgid "Based on browser"
 msgstr ""
 
-#: class-wc-gateway-payline-nx.php:35
+#: class-wc-gateway-payline-nx.php:30
 msgid "Billing left"
 msgstr ""
 
-#: class-wc-abstract-payline.php:878
+#: class-wc-abstract-payline.php:900
 msgid "Buyer cancelled his payment"
 msgstr ""
 
-#: class-wc-abstract-payline.php:442
-msgid ""
-"Code of payment page customization created in Payline Administration Center"
+#: class-wc-abstract-payline.php:810
+msgid "Cancel payment"
 msgstr ""
 
-#: class-wc-abstract-payline.php:447
+#: class-wc-abstract-payline.php:450
 msgid "Contract number that determines the point of sale used in Payline"
 msgstr ""
 
-#: class-wc-abstract-payline.php:457
+#: class-wc-abstract-payline.php:460
 msgid "Contracts displayed for payment retry. Values must be separated by ;"
 msgstr ""
 
-#: class-wc-abstract-payline.php:452
+#: class-wc-abstract-payline.php:455
 msgid ""
 "Contracts displayed on web payment page - step 1. Values must be separated "
 "by ;"
 msgstr ""
 
-#: class-wc-abstract-payline.php:440
+#: class-wc-abstract-payline.php:443
 msgid "Custom page code"
 msgstr ""
 
-#: class-wc-abstract-payline.php:338
+#: class-wc-abstract-payline.php:341
 msgid "Debug logging"
 msgstr ""
 
-#: class-wc-abstract-payline.php:406
+#: class-wc-abstract-payline.php:409
 msgid "Default language"
 msgstr ""
 
-#: class-wc-abstract-payline.php:332
+#: class-wc-gateway-payline-rec.php:65
+msgid ""
+"Define a list of product ids that can be payed with REC. Values must be "
+"separated by ;"
+msgstr ""
+
+#: class-wc-abstract-payline.php:335
 msgid "Description"
 msgstr ""
 
-#: class-wc-abstract-payline.php:412
+#: class-wc-gateway-payline-rec.php:62
+msgid "Eligible product ids"
+msgstr ""
+
+#: class-wc-abstract-payline.php:415
 msgid "en"
 msgstr ""
 
-#: class-wc-abstract-payline.php:340
+#: class-wc-abstract-payline.php:343
 msgid "Enable"
 msgstr ""
 
-#: class-wc-abstract-payline.php:322
+#: class-wc-abstract-payline.php:325
 #, php-format
 msgid "Enable %s"
 msgstr ""
 
-#: class-wc-abstract-payline.php:411
+#: class-wc-abstract-payline.php:414
 msgid "fr"
 msgstr ""
 
-#: class-wc-abstract-payline.php:874
+#: class-wc-abstract-payline.php:886
 msgid "Fraud alert. See details in Payline administration center"
 msgstr ""
 
-#: class-wc-abstract-payline.php:368
+#: class-wc-abstract-payline.php:371
 msgid "Homologation"
 msgstr ""
 
-#: class-wc-abstract-payline.php:382
+#: class-wc-abstract-payline.php:385
 msgid "Host"
 msgstr ""
 
@@ -142,22 +151,28 @@ msgid "http://www.monext.fr"
 msgstr ""
 
 #. URI of the plugin
-msgid "http://www.payline.com"
+msgid "https://docs.payline.com/display/DT/Plugin+WooCommerce"
 msgstr ""
 
-#: class-wc-abstract-payline.php:433
+#: class-wc-abstract-payline.php:445
+msgid ""
+"In redirection mode, fill the code of payment page customization created in "
+"Payline Administration Center"
+msgstr ""
+
+#: class-wc-abstract-payline.php:436
 msgid "In-Shop Column mode"
 msgstr ""
 
-#: class-wc-abstract-payline.php:434
+#: class-wc-abstract-payline.php:437
 msgid "In-Shop Lightbox mode"
 msgstr ""
 
-#: class-wc-abstract-payline.php:432
+#: class-wc-abstract-payline.php:435
 msgid "In-Shop Tab mode"
 msgstr ""
 
-#: class-wc-abstract-payline.php:437
+#: class-wc-abstract-payline.php:440
 msgid ""
 "Integration mode of the payment widget in the shop. Contact payline support "
 "for more details"
@@ -167,23 +182,23 @@ msgstr ""
 msgid "integrations of Payline payment solution in your WooCommerce store"
 msgstr ""
 
-#: class-wc-abstract-payline.php:415
+#: class-wc-abstract-payline.php:418
 msgid "Language used to display Payline web payment pages"
 msgstr ""
 
-#: class-wc-abstract-payline.php:390
+#: class-wc-abstract-payline.php:393
 msgid "Login"
 msgstr ""
 
-#: class-wc-abstract-payline.php:445 class-wc-abstract-payline.php:520
+#: class-wc-abstract-payline.php:448 class-wc-abstract-payline.php:515
 msgid "Main contract number"
 msgstr ""
 
-#: class-wc-gateway-payline-rec.php:35
+#: class-wc-gateway-payline-rec.php:55
 msgid "Maximum records"
 msgstr ""
 
-#: class-wc-abstract-payline.php:352 class-wc-abstract-payline.php:511
+#: class-wc-abstract-payline.php:355 class-wc-abstract-payline.php:506
 msgid "Merchant ID"
 msgstr ""
 
@@ -191,46 +206,46 @@ msgstr ""
 msgid "Monext"
 msgstr ""
 
-#: class-wc-abstract-recurring-payline.php:52
+#: class-wc-abstract-recurring-payline.php:46
 msgid "One transaction every seven days"
 msgstr ""
 
-#: class-wc-abstract-recurring-payline.php:57
+#: class-wc-abstract-recurring-payline.php:51
 msgid "One transaction every six months"
 msgstr ""
 
-#: class-wc-abstract-recurring-payline.php:56
+#: class-wc-abstract-recurring-payline.php:50
 msgid "One transaction every three months"
 msgstr ""
 
-#: class-wc-abstract-recurring-payline.php:55
+#: class-wc-abstract-recurring-payline.php:49
 msgid "One transaction every two months"
 msgstr ""
 
-#: class-wc-abstract-recurring-payline.php:51
+#: class-wc-abstract-recurring-payline.php:45
 msgid "One transaction per day"
 msgstr ""
 
-#: class-wc-abstract-recurring-payline.php:54
+#: class-wc-abstract-recurring-payline.php:48
 msgid "One transaction per month"
 msgstr ""
 
-#: class-wc-abstract-recurring-payline.php:58
+#: class-wc-abstract-recurring-payline.php:52
 msgid "One transaction per year"
 msgstr ""
 
-#: class-wc-abstract-payline.php:394
+#: class-wc-abstract-payline.php:397
 msgid "Password"
 msgstr ""
 
-#: class-wc-abstract-payline.php:361
+#: class-wc-abstract-payline.php:364
 #, php-format
 msgid ""
 "Password used to call %s web services (available in the %s administration "
 "center)"
 msgstr ""
 
-#: class-wc-abstract-payline.php:220
+#: class-wc-abstract-payline.php:222
 msgid "Pay via Payline"
 msgstr ""
 
@@ -238,169 +253,177 @@ msgstr ""
 msgid "Payline"
 msgstr ""
 
-#: class-wc-abstract-payline.php:371
+#: class-wc-abstract-payline.php:374
 msgid "Payline destination environement of your requests"
 msgstr ""
 
-#: class-wc-abstract-payline.php:348 class-wc-abstract-payline.php:536
+#: class-wc-abstract-payline.php:351 class-wc-abstract-payline.php:531
 msgid "PAYLINE GATEWAY ACCESS"
 msgstr ""
 
-#: class-wc-abstract-payline.php:418
+#: class-wc-abstract-payline.php:799
+msgid "Payment"
+msgstr ""
+
+#: class-wc-abstract-payline.php:421
 msgid "Payment action"
 msgstr ""
 
-#: class-wc-abstract-recurring-payline.php:47
+#: class-wc-abstract-recurring-payline.php:41
 msgid "Payment frequencies"
 msgstr ""
 
-#: class-wc-abstract-payline.php:890
+#: class-wc-abstract-payline.php:890 class-wc-abstract-payline.php:891
 msgid "Payment in progress"
 msgstr ""
 
-#: class-wc-abstract-payline.php:896
+#: class-wc-abstract-payline.php:913
 #, php-format
 msgid "Payment refused (code %s: %s)"
 msgstr ""
 
-#: class-wc-abstract-payline.php:886
+#: class-wc-abstract-payline.php:907
 msgid "Payment session expired with no redirection on payment page"
 msgstr ""
 
-#: class-wc-abstract-payline.php:882
+#: class-wc-abstract-payline.php:903
 msgid "Payment session expired without transaction"
 msgstr ""
 
-#: class-wc-abstract-payline.php:402
+#: class-wc-abstract-payline.php:405
 msgid "PAYMENT SETTINGS"
 msgstr ""
 
-#: class-wc-abstract-payline.php:386
+#: class-wc-abstract-payline.php:389
 msgid "Port"
 msgstr ""
 
-#: class-wc-abstract-payline.php:450
+#: class-wc-abstract-payline.php:453
 msgid "Primary contracts"
 msgstr ""
 
-#: class-wc-abstract-payline.php:369
+#: class-wc-abstract-payline.php:372
 msgid "Production"
 msgstr ""
 
-#: class-wc-abstract-payline.php:378 class-wc-abstract-payline.php:538
+#: class-wc-abstract-payline.php:381 class-wc-abstract-payline.php:533
 msgid "PROXY SETTINGS"
 msgstr ""
 
-#: class-wc-abstract-payline.php:413
+#: class-wc-abstract-payline.php:416
 msgid "pt"
 msgstr ""
 
-#: class-wc-gateway-payline-nx.php:38
-msgid "Recurring billing number"
+#: class-wc-gateway-payline-nx.php:33
+msgid "Recurring billing number. Mandatory field"
 msgstr ""
 
-#: class-wc-abstract-payline.php:435
+#: class-wc-abstract-payline.php:438
 msgid "Redirection mode"
 msgstr ""
 
-#: class-wc-abstract-payline.php:928
+#: class-wc-abstract-payline.php:980
 msgid "Refund failed."
 msgstr ""
 
-#: class-wc-abstract-payline.php:951
+#: class-wc-abstract-payline.php:1003
 #, php-format
 msgid "Refunded %1$s - Refund ID: %2$s"
 msgstr ""
 
-#: class-wc-abstract-payline.php:564
+#: class-wc-abstract-payline.php:559
 msgid "Reset configuration"
 msgstr ""
 
-#: class-wc-abstract-payline.php:455
+#: class-wc-abstract-payline.php:458
 msgid "Secondary contracts"
 msgstr ""
 
-#: class-wc-gateway-payline-rec.php:38
+#: class-wc-gateway-payline-rec.php:58
 msgid "Set a number maximum of records or leave empty"
 msgstr ""
 
-#: woocommerce-payline.php:39
+#: woocommerce-payline.php:40
 #, php-format
 msgid ""
 "Sorry! In order to use WooCommerce %s Payment plugin, you need to install "
 "and activate the WooCommerce plugin."
 msgstr ""
 
-#: class-wc-abstract-payline.php:320
+#: class-wc-abstract-payline.php:323
 msgid "Status"
 msgstr ""
 
-#: class-wc-abstract-payline.php:364
+#: class-wc-abstract-payline.php:367
 msgid "Target environment"
 msgstr ""
 
-#: class-wc-abstract-payline.php:506
+#: class-wc-abstract-payline.php:501
 msgid ""
 "The SOAP extension is not enabled in your PHP installation and is required"
 msgstr ""
 
-#: class-wc-abstract-payline.php:334
+#: class-wc-abstract-payline.php:933
+msgid "There was a error processing your payment."
+msgstr ""
+
+#: class-wc-abstract-payline.php:337
 msgid "This controls the description which the user sees during checkout."
 msgstr ""
 
-#: class-wc-abstract-payline.php:328
+#: class-wc-abstract-payline.php:331
 msgid "This controls the title which the user sees during checkout."
 msgstr ""
 
-#: class-wc-abstract-payline.php:326
+#: class-wc-abstract-payline.php:329
 msgid "Title"
 msgstr ""
 
-#: class-wc-abstract-payline.php:856
+#: class-wc-abstract-payline.php:871
 #, php-format
 msgid "Token %s does not match expected %s for order %s"
 msgstr ""
 
-#: class-wc-abstract-recurring-payline.php:53
+#: class-wc-abstract-recurring-payline.php:47
 msgid "Two transactions per month"
 msgstr ""
 
-#: class-wc-abstract-payline.php:425
+#: class-wc-abstract-payline.php:428
 msgid "Type of transaction created after a payment"
 msgstr ""
 
-#: class-wc-abstract-payline.php:540
+#: class-wc-abstract-payline.php:535
 #, php-format
 msgid "Unable to connect to Payline (code %s : %s)"
 msgstr ""
 
-#: class-wc-abstract-payline.php:536 class-wc-abstract-payline.php:538
+#: class-wc-abstract-payline.php:531 class-wc-abstract-payline.php:533
 #, php-format
 msgid "Unable to connect to Payline, check your %s"
 msgstr ""
 
-#: class-wc-abstract-payline.php:428
+#: class-wc-abstract-payline.php:431
 msgid "Widget integration mode"
 msgstr ""
 
-#: class-wc-abstract-payline.php:531
+#: class-wc-abstract-payline.php:526
 msgid "You are in homologation mode, payments are simulated !"
 msgstr ""
 
-#: class-wc-abstract-payline.php:335
+#: class-wc-abstract-payline.php:338
 #, php-format
 msgid "You will be redirected on %s secured pages at the end of your order."
 msgstr ""
 
-#: class-wc-abstract-payline.php:500
+#: class-wc-abstract-payline.php:495
 #, php-format
 msgid "Your %s configuration parameters are reset."
 msgstr ""
 
-#: class-wc-abstract-payline.php:355
+#: class-wc-abstract-payline.php:358
 msgid "Your Payline account identifier"
 msgstr ""
 
-#: class-wc-abstract-payline.php:529
+#: class-wc-abstract-payline.php:524
 msgid "Your settings is correct, connexion with Payline is established"
 msgstr ""

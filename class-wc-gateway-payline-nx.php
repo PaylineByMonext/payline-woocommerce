@@ -13,11 +13,6 @@ use Payline\PaylineSDK;
  */
 
 
-if ( ! class_exists( 'WC_Abstract_Recurring_Payline_NX', false ) ) {
-    include_once 'class-wc-abstract-recurring-payline.php';
-}
-
-
 class WC_Gateway_Payline_NX extends WC_Abstract_Recurring_Payline_NX {
 
 
@@ -35,7 +30,7 @@ class WC_Gateway_Payline_NX extends WC_Abstract_Recurring_Payline_NX {
             'title' => __('Billing left', 'payline'),
             'default' => '3',
             'type' => 'text',
-            'description' => __('Recurring billing number', 'payline')
+            'description' => __('Recurring billing number. Mandatory field', 'payline')
         );
     }
 
@@ -72,6 +67,21 @@ class WC_Gateway_Payline_NX extends WC_Abstract_Recurring_Payline_NX {
         do_action('payline_before_do_web_payment_nx', $requestParams, $this);
 
         return $requestParams;
+    }
+
+    /**
+     * Check if the gateway is available for use.
+     *
+     * @return bool
+     */
+    public function is_available() {
+
+        $is_available = parent::is_available();
+        $cart = WC()->cart;
+        if ($is_available && $cart) {
+            return $this->settings['billing_left'] > 0;
+        }
+        return $is_available;
     }
 
 }

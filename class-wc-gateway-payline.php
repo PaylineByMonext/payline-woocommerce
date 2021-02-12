@@ -12,11 +12,6 @@
  */
 
 
-if ( ! class_exists( 'WC_Abstract_Payline', false ) ) {
-    include_once 'class-wc-abstract-payline.php';
-}
-
-
 class WC_Gateway_Payline extends WC_Abstract_Payline {
 
     protected $paymentMode = 'CPT';

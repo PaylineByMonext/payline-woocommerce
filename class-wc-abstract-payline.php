@@ -11,6 +11,8 @@ abstract class WC_Abstract_Payline extends WC_Payment_Gateway {
     /** @var Payline\PaylineSDK $SDK */
     protected $SDK;
 
+    protected $urlTypes = ['notification', 'return', 'cancel'];
+
     protected $paymentMode = '';
 
     protected $extensionVersion = '1.4';
@@ -272,6 +274,7 @@ abstract class WC_Abstract_Payline extends WC_Payment_Gateway {
         if ($this->debug) {
             $logger = wc_get_logger();
             $messages = array();
+            $messages[] = $_SERVER['REQUEST_URI'];
             $messages[] = get_class($this);
             if($context) {
                 $messages[] = implode(':', $context);
@@ -439,7 +442,7 @@ abstract class WC_Abstract_Payline extends WC_Payment_Gateway {
         $this->form_fields['custom_page_code'] = array(
             'title' => __('Custom page code', 'payline'),
             'type' => 'text',
-            'description' => __('Code of payment page customization created in Payline Administration Center', 'payline')
+            'description' => __('In redirection mode, fill the code of payment page customization created in Payline Administration Center', 'payline')
         );
         $this->form_fields['main_contract'] = array(
             'title' => __('Main contract number', 'payline'),
@@ -478,16 +481,8 @@ abstract class WC_Abstract_Payline extends WC_Payment_Gateway {
                 <td width="100%">
                     <p>
                         <?php echo "Payline extension v".$this->extensionVersion;?><br/>
-                        Developed by <a href="http://www.monext.net" target="#">Monext</a> for WooCommerce 2.6 to 3.3<br/>
-                        <?php
-                        $mailSubject = "Question about WooCommerce plugin - merchant ".$this->settings['merchant_id'];
-                        if(strcmp("PROD",$this->settings['environment'])==0){
-                            $mailSubject .= " in PRODUCTION";
-                        }else{
-                            $mailSubject .= " in HOMOLOGATION";
-                        }
-                        ?>
-                        For any question please contact <a href="mailto:support@payline.com?subject=<?php echo $mailSubject?>">support@payline.com</a><br/>
+                        Developed by <a href="https://www.monext.fr/retail" target="#">Monext</a> for WooCommerce<br/>
+                        For any question please contact Payline support<br/>
                     </p>
                 </td>
             </tr>
@@ -617,6 +612,13 @@ abstract class WC_Abstract_Payline extends WC_Payment_Gateway {
      */
     public function getSDK()
     {
+        if ( ! function_exists( 'get_plugins' ) ) {
+            require_once ABSPATH . 'wp-admin/includes/plugin.php';
+        }
+        $woocommerceinfo = get_plugins('/woocommerce');
+        $usedBy = (!empty($woocommerceinfo)) ? current($woocommerceinfo)['Name'] .' '. current($woocommerceinfo)['Version'] : 'wooComm';
+        $usedBy .= ' - v'.$this->extensionVersion;
+
         $SDK = new PaylineSDK(
             $this->settings['merchant_id'],
             $this->settings['access_key'],
@@ -626,7 +628,7 @@ abstract class WC_Abstract_Payline extends WC_Payment_Gateway {
             $this->settings['proxy_password'],
             $this->settings['environment']
         );
-        $SDK->usedBy('wooComm '.$this->extensionVersion);
+        $SDK->usedBy($usedBy);
 
         return $SDK;
     }
@@ -710,10 +712,10 @@ abstract class WC_Abstract_Payline extends WC_Payment_Gateway {
         }
 
         // TRANSACTION OPTIONS
-        $doWebPaymentRequest['notificationURL'] = add_query_arg('wc-api', get_class($this), home_url('/'));
+        $doWebPaymentRequest['notificationURL'] = $this->get_request_url('notification');
+        $doWebPaymentRequest['returnURL'] = $this->get_request_url('return');
+        $doWebPaymentRequest['cancelURL'] = $this->get_request_url('cancel');
 
-        $doWebPaymentRequest['returnURL'] = $doWebPaymentRequest['notificationURL'];
-        $doWebPaymentRequest['cancelURL'] = $doWebPaymentRequest['notificationURL'];
         $doWebPaymentRequest['languageCode'] = $this->settings['language'];
         $doWebPaymentRequest['customPaymentPageCode'] = $this->settings['custom_page_code'];
 
@@ -736,11 +738,33 @@ abstract class WC_Abstract_Payline extends WC_Payment_Gateway {
     }
 
 
+    protected function get_request_url($urlType = '') {
+        return add_query_arg(array('wc-api' => get_class($this), 'url_type'=>$urlType), home_url('/'));
+    }
+
+
 
     /**
      * @param int $order_id
      */
     function generate_payline_form($order_id) {
+
+
+
+        echo '<script type="text/javascript">
+hideReceivedContext = function() {
+    jQuery(".storefront-breadcrumb").hide();
+    jQuery(".order_details").hide();
+    jQuery("h1.entry-title").html("'. __('Payment', 'payline') .'")
+    jQuery("#site-header-cart").hide();
+};
+
+cancelPaylinePayment = function ()
+{
+    Payline . Api . endToken(); // end the token s life
+    window . location . href = Payline . Api . getCancelAndReturnUrls() . cancelUrl; // redirect the user to cancelUrl
+}
+            </script>';
 
         $order = wc_get_order($order_id);
 
@@ -791,11 +815,15 @@ abstract class WC_Abstract_Payline extends WC_Payment_Gateway {
                 $match[1]
             );
 
-            //TODO: Gestion du restore cart
-            if(false && is_user_logged_in()) {
-                $order_again_url = wp_nonce_url( add_query_arg( 'order_again', $order->get_id(), wc_get_cart_url() ), 'woocommerce-order_again' );
-                printf('<p class="order-again"><a href="%s"class="button"></a></p>', esc_url( $order_again_url ), esc_html_e( 'Back to cart', 'woocommerce' ));
-            }
+
+            echo '<script type="text/javascript">
+            jQuery(document).ready(function($){
+                hideReceivedContext();
+            });
+            </script>
+            <p></p><button onclick="javascript:cancelPaylinePayment()">' .
+            __('Cancel payment', 'payline') .
+            '</button></p>';
 
             exit;
         } else {
@@ -814,12 +842,15 @@ abstract class WC_Abstract_Payline extends WC_Payment_Gateway {
 
                 exit;
             } else {
-                echo '<p>' . sprintf( __( 'You can\'t be redirected to payment page (error code ' . $result['result']['code'] . ' : ' . $result['result']['longMessage'] . '). Please contact us.', 'payline' ), 'Payline' ) . '</p>';
+                $message = sprintf( __( 'You can\'t be redirected to payment page (error code ' . $result['result']['code'] . ' : ' . $result['result']['longMessage'] . '). Please contact us.', 'payline' ), 'Payline' );
+                wp_redirect($this->get_error_payment_url($order, $message));
+                die();
             }
         }
     }
 
     function payline_callback() {
+
         if(isset($_GET['order_id'])){
             $this->generate_payline_form($_GET['order_id']);
             exit;
@@ -860,9 +891,6 @@ abstract class WC_Abstract_Payline extends WC_Payment_Gateway {
             if($this->paylineSuccessWebPaymentDetails($order, $res)) {
                 wp_redirect($this->get_return_url($order));
                 die();
-            } elseif($this->paylineCancelWebPaymentDetails($order, $res)) {
-                wp_redirect($order->get_cancel_order_url());
-                die();
             } elseif ($res['result']['code'] == '04003') {
                 update_post_meta((int) $orderId, 'Transaction ID', $res['transaction']['id']);
                 update_post_meta((int) $orderId, 'Card number', $res['card']['number']);
@@ -871,31 +899,71 @@ abstract class WC_Abstract_Payline extends WC_Payment_Gateway {
                 $order->update_status('on-hold', __('Fraud alert. See details in Payline administration center', 'payline'));
                 wp_redirect($this->get_return_url($order));
                 die();
-            }elseif ($res['result']['code'] == '02319'){
-                $order->update_status('cancelled',__('Buyer cancelled his payment', 'payline'));
-                wp_redirect($order->get_cancel_order_url());
-                die();
-            }elseif ($res['result']['code'] == '02304' || $res['result']['code'] == '02324'){
-                $order->update_status('cancelled', __('Payment session expired without transaction', 'payline'));
-                wp_redirect($order->get_cancel_order_url());
-                die();
-            }elseif ($res['result']['code'] == '02534' || $res['result']['code'] == '02324'){
-                $order->update_status('cancelled', __('Payment session expired with no redirection on payment page', 'payline'));
-                wp_redirect($order->get_cancel_order_url());
-                die();
-            }elseif ($res['result']['code'] == '02306' || $res['result']['code'] == '02533'){
+            } elseif ($res['result']['code'] == '02306' || $res['result']['code'] == '02533'){
                 $order->add_order_note(__('Payment in progress', 'payline'));
-                die('Payment in progress');
-            } else {
-                if($res['transaction']['id']){
-                    update_post_meta((int) $orderId, 'Transaction ID', $res['transaction']['id']);
-                }
-                $order->update_status('failed', sprintf( __('Payment refused (code %s: %s)','payline'), $res['result']['code'], $res['result']['longMessage'] . ': ' .get_class($this)));
+                wc_add_notice( __( 'Payment in progress', 'payline' ), 'notice' );
                 wp_redirect($this->get_return_url($order));
+                die();
+            } else {
+                $message = '';
+                $status = '';
+                if($this->paylineCancelWebPaymentDetails($order, $res)) {
+
+                } elseif ($res['result']['code'] == '02319' || $res['result']['code'] == '02014'){
+                    $message = __('Buyer cancelled his payment', 'payline');
+                    $status = 'cancelled';
+                } elseif ($res['result']['code'] == '02304' || $res['result']['code'] == '02324'){
+                    $message = __('Payment session expired without transaction', 'payline');
+                    $status = 'cancelled';
+
+                }elseif ($res['result']['code'] == '02534' || $res['result']['code'] == '02324'){
+                    $message = __('Payment session expired with no redirection on payment page', 'payline');
+                    $status = 'cancelled';
+                } else {
+                    if($res['transaction']['id']){
+                        update_post_meta((int) $orderId, 'Transaction ID', $res['transaction']['id']);
+                    }
+                    $message = sprintf( __('Payment refused (code %s: %s)','payline'), $res['result']['code'], $res['result']['longMessage']);
+                    $status = 'failed';
+                }
+
+                if($status) {
+                    $order->update_status($status, $message);
+                }
+                wp_redirect($this->get_error_payment_url($order, $message));
                 die();
             }
         }
     }
+
+    /**
+     * @param WC_Order $order
+     * @param string $message
+     * @return string
+     */
+    public function get_error_payment_url(WC_Order  $order, $message = '')
+    {
+        $noticeMessage = __( 'There was a error processing your payment.', 'payline' );
+        if($message) {
+            $noticeMessage .= ': "' . $message . '"';
+        }
+        wc_add_notice( $noticeMessage , 'error' );
+
+        if( is_user_logged_in()) {
+            $errorUrl = add_query_arg(
+                array('order_again'=> $order->get_id(),
+                    'payline_cancel'=>1,
+                    '_wpnonce' =>wp_create_nonce( 'woocommerce-order_again' )
+                ),
+                wc_get_cart_url()
+            );
+        } else {
+            $errorUrl = $order->get_cancel_order_url();
+        }
+
+        return $errorUrl;
+    }
+
 
 
     /**
@@ -954,7 +1022,5 @@ abstract class WC_Abstract_Payline extends WC_Payment_Gateway {
 
         return false;
     }
-
-
 
 }

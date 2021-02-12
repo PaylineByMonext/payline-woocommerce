@@ -7,6 +7,6 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'Psr\\Log\\' => array($vendorDir . '/psr/log/Psr/Log'),
-    'Payline\\' => array($vendorDir . '/monext/payline-sdk/src/Payline', $vendorDir . '/monext/payline-tools-sdk/src/PaylineTools'),
+    'Payline\\' => array($vendorDir . '/monext/payline-sdk/src/Payline'),
     'Monolog\\' => array($vendorDir . '/monolog/monolog/src/Monolog'),
 );

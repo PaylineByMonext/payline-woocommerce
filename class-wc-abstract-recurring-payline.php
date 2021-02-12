@@ -12,12 +12,6 @@ use Payline\PaylineSDK;
  * WC tested up to: 4.0.1
  */
 
-
-if ( ! class_exists( 'WC_Abstract_Payline', false ) ) {
-    include_once 'class-wc-abstract-payline.php';
-}
-
-
 abstract class WC_Abstract_Recurring_Payline_NX extends WC_Abstract_Payline {
 
 

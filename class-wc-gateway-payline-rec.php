@@ -13,11 +13,6 @@ use Payline\PaylineSDK;
  */
 
 
-if ( ! class_exists( 'WC_Abstract_Recurring_Payline_NX', false ) ) {
-    include_once 'class-wc-abstract-recurring-payline.php';
-}
-
-
 class WC_Gateway_Payline_REC extends WC_Abstract_Recurring_Payline_NX {
 
 
@@ -27,15 +22,47 @@ class WC_Gateway_Payline_REC extends WC_Abstract_Recurring_Payline_NX {
 
     public $method_title = 'Payline par Abonnement';
 
+
+    /**
+     * Check if the gateway is available for use.
+     *
+     * @return bool
+     */
+    public function is_available() {
+
+        $is_available = parent::is_available();
+        $cart = WC()->cart;
+        if ($is_available && $cart) {
+            $eligibleIds = !empty($this->settings['eligible_product_ids']) ? explode(";", $this->settings['eligible_product_ids']) : array();
+            foreach ( $cart->get_cart() as $cart_item_key => $cart_item ) {
+                $product = $cart_item['data'];
+                if(!in_array($product->get_id(), $eligibleIds)) {
+                    return false;
+                }
+            }
+        }
+        return $is_available;
+    }
+
+    /**
+     *
+     */
     function init_form_fields()
     {
         parent::init_form_fields();
 
         $this->form_fields['max_records'] = array(
             'title' => __('Maximum records', 'payline'),
-            'default' => '36',
+            'default' => '12',
             'type' => 'text',
             'description' => __('Set a number maximum of records or leave empty', 'payline')
+        );
+
+        $this->form_fields['eligible_product_ids'] = array(
+            'title' => __('Eligible product ids', 'payline'),
+            'default' => '',
+            'type' => 'text',
+            'description' => __('Define a list of product ids that can be payed with REC. Values must be separated by ;', 'payline')
         );
     }
 
