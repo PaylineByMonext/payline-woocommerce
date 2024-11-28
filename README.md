@@ -7,4 +7,4 @@ Monext continues to provide innovative and secure payment solutions for business
 
 Feel free to explore, contribute, and stay updated on our latest developments. Thank you for being part of the journey!
 
-Follow : [https://github.com/Monext/monext-php-sdk](https://github.com/Monext/monext-woocommerce)
+Follow : https://github.com/Monext/monext-woocommerce
