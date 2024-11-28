@@ -1,56 +1,10 @@
 Payline extension for wooCommerce
 ====================================
 
-This plugin allows the merchant to connect his store to Payline payment gateway.
-Payline offers many payment means (Visa, Mastercard, American Express, Paypal, JCB,...) and a powerfull anti-fraud system.
+We are excited to announce that our GitHub repository has been rebranded from Payline to Monext. This change reflects the broader range of payment solutions and services we now offer under the Monext name.
 
-Docs
-====
+Monext continues to provide innovative and secure payment solutions for businesses of all sizes. Through this repository, you'll find our latest tools, plugins, and API documentation, enabling seamless integration with our platforms.
 
-All information available on https://support.payline.com/hc/fr/articles/201084116-modules-Payline-pour-WooCommerce-1-x-et-2-x
+Feel free to explore, contribute, and stay updated on our latest developments. Thank you for being part of the journey!
 
-
-About
-=====
-
-Requirements
-------------
-
-This extension requires at least wooCommerce 2.3
-It's tested up to wooCommerce 2.6.4 and woocommerce 3.x
-
-
-Author
-------
-
-Fabien SUAREZ - <fabien.suarez@payline.com>
-
-License
--------
-
-Payline is licensed under the LGPL-3.0+ License
-
-Changelog
--------
-
-* 1.3.6 - 2018/01/02  
-     Feature - woocommerce 3.x compatibility
-     Fix - Truncate buyer data before send it to Payline.
-     
-* 1.3.5 - 2017/04/04  
-     Feature - send buyer info mandatoty for Cetelem 3x / 4x
-     
- * 1.3.4 - 2017/02/27  
-     Fix - languages files
-
-* 1.3.3 - 2016/08/26  
-     Feature - order/token association. Prevents conflicts between payment sessions.
-
-* 1.3.2 - 2016/08/04  
-     Fix - Truncate order details product name to 50 characters before send it to Payline.
-
-* 1.3.1 - 2015/12/09  
-     Feature - compliance with Payline PHP library v4.43
-
-* 1.3 - 2015/02/27  
-     Feature - compliance with wc 2.3 and over
+Follow : [https://github.com/Monext/monext-php-sdk](https://github.com/Monext/monext-woocommerce)
